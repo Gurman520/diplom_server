@@ -1,10 +1,11 @@
 from typing import Union
-
+import logging as log
 from fastapi import FastAPI, Body
 from logic import start
 
 app = FastAPI()
-
+log.basicConfig(level=log.INFO, filename="log.log",filemode="w", format="%(asctime)s %(levelname)s %(message)s")
+log.info("Start server")
 
 @app.get("/")
 def read_root():
@@ -18,11 +19,13 @@ def read_root():
 
 @app.get("ping")
 def ping():
+    log.info("Get Ping")
     return {"succses": "OK"}
 
 
 @app.get("start-analysis")
 def start_analysis(data = Body()):
+    log.info("Get start analysis")
     rezult = start()
     if rezult == None:
         return {"succuss": "OK"}
@@ -32,4 +35,5 @@ def start_analysis(data = Body()):
 
 @app.get("status-analysis")
 def status_analysis():
+    log.info("Get status analysis")
     return {"succuss": "OK"}
