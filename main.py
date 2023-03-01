@@ -1,7 +1,6 @@
 import os
 import subprocess
 from typing import Union
-import threading
 import asyncio
 import logging as log
 from fastapi import FastAPI, Body
@@ -26,30 +25,25 @@ def ping():
 
 @app.post("/api/v1/analysis/start")
 def start_analysis():
-    log.info("Get start analysis")
+    log.info("Post start analysis")
     sp = subprocess.Popen(
         [PYTHON_PATH, os.path.join('.', 'logic.py')])
     print("Основной поток")
-    return {"succuss": "OKK"}
+    if sp.stderr is not None:
+        return {"Error": sp.stderr}
+    return {"success": "OK"}
 
 
 @app.get("/api/v1/analysis/status")
 def status_analysis():
     log.info("Get status analysis")
-    result = status()
-    if result == 0:
+    if os.path.isfile('./ss.csv'):
         return {"Status": "Finish"}
-    elif result == 1:
-        return {"Status": "processing"}
     else:
-        return {"Status": "error processing analysis"}
+        return {"Status": "processing"}
 
 
-@app.get("api/v1/analysis/get-result")
+@app.get("/api/v1/analysis/get-result")
 def get_result():
     log.info("Get Get-result analysis")
-    return result()
-
-
-async def d():
-    await start()
+    return {"message": "Скоро будет, нужно подождать"}
