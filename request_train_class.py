@@ -2,15 +2,15 @@ from fastapi import File
 from pydantic import BaseModel
 
 
-class Status(BaseModel):
+class RequestTrainStatus(BaseModel):
     uuid: str
 
 
-class Start(BaseModel):
+class RequestTrain(BaseModel):
     userID: int
     nameFile: str
     file: bytes = File()
 
 
-class Result(BaseModel):
+class RequestTrainResult(BaseModel):
     uuid: str

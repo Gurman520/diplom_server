@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from fastapi import File
 
 
 class ResponseStatus(BaseModel):
@@ -10,7 +11,7 @@ class ResponseStart(BaseModel):
 
 
 class ResponseResult(BaseModel):
-    file: str
+    file: bytes = File()
 
 
 class ResponseError(BaseModel):
