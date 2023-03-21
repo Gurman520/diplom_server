@@ -12,3 +12,7 @@ class ResponseModelDelete(BaseModel):
 
 class ResponseModelRun(BaseModel):
     NameModel: str
+
+
+class ResponseModelList(BaseModel):
+    NameModel: list

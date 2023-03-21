@@ -11,7 +11,7 @@ class ResponseStart(BaseModel):
 
 
 class ResponseResult(BaseModel):
-    file: bytes = File()
+    file: list
 
 
 class ResponseError(BaseModel):

@@ -9,7 +9,7 @@ class RequestTrainStatus(BaseModel):
 class RequestTrain(BaseModel):
     userID: int
     nameFile: str
-    file: bytes = File()
+    file: list
 
 
 class RequestTrainResult(BaseModel):

@@ -1,12 +1,21 @@
 import os
 import subprocess
 import uuid as u
+import logging as log
+import configparser
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse, FileResponse
-from request_class import Status, Start, Result
-from response_class import ResponseStatus, ResponseStart, ResponseResult
+from request.request_class import Status, Start, Result
+from response.response_class import ResponseStatus, ResponseStart, ResponseResult
+from parser import write_to_file
 
-PYTHON_PATH = 'C:/Users/Роман/PycharmProjects/Server_D/venv/Scripts/python.exe'
+config = configparser.ConfigParser()
+config.read('settings.ini', encoding="utf-8")
+PYTHON_PATH = config["Settings"]["PYTHON_PATH"]
+print(PYTHON_PATH)
+# PYTHON_PATH = 'C:/Users/Роман/PycharmProjects/Server_D/venv/Scripts/python.exe'
+log.basicConfig(level=log.INFO, filename="./log file/predict.log", filemode="a",
+                format="%(asctime)s %(levelname)s %(message)s")
 status_subprocess = dict()  # Словарь, которй хранит оинформацию о всех запущенных процессах.
 
 router = APIRouter(
@@ -18,10 +27,9 @@ router = APIRouter(
 
 @router.post("/predict", response_model=ResponseStart)
 def start_analysis(req_start: Start):
-    # log.info("Post start analysis")
-    print(req_start.userID, req_start.nameFile, req_start.file, sep=" ")
+    log.info("Post start predict")
     uuid = u.uuid1()
-    print(uuid)
+    write_to_file(req_start.comments, uuid, 1)
     sp = subprocess.Popen(
         [PYTHON_PATH, os.path.join('.', 'logic.py '), '-uuid', str(uuid)])
     if sp.stderr is not None:
@@ -32,7 +40,7 @@ def start_analysis(req_start: Start):
 
 @router.get("/predict/status/{uuid}", response_model=ResponseStatus)
 def status_analysis(req_status: Status):
-    # log.info("Get status analysis")
+    log.info("Get status predict")
     uui = req_status.uuid
     s = status_subprocess.get(u.UUID(uui))
     if s is None:
@@ -51,7 +59,7 @@ def status_analysis(req_status: Status):
 
 @router.get("/predict/result/{uuid}", response_model=ResponseResult)
 def get_result(req_result: Result):
-    # log.info("Get Get-result analysis")
+    log.info("Get result predict")
     uuid = req_result.uuid
     s = status_subprocess.get(u.UUID(uuid))
     if s is None:

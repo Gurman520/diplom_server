@@ -1,10 +1,6 @@
-import os
-import subprocess
-import uuid as u
-from fastapi import APIRouter, HTTPException
-from fastapi.responses import JSONResponse, FileResponse
-from request_model_class import RequestModelDelete, RequestModelSet
-from response_model_class import ResponseModelSet, ResponseModelDelete, ResponseModelRun
+from fastapi import APIRouter
+from request.request_model_class import RequestModelDelete, RequestModelSet
+from response.response_model_class import ResponseModelSet, ResponseModelDelete, ResponseModelRun, ResponseModelList
 
 # PYTHON_PATH = 'C:/Users/Роман/PycharmProjects/Server_D/venv/Scripts/python.exe'
 # status_subprocess = dict()  # Словарь, которй хранит оинформацию о всех запущенных процессах.
@@ -31,6 +27,6 @@ def get_result():
     return ResponseModelRun(NameModel="static")
 
 
-@router.get("/models/list", response_model=ResponseModelRun)
+@router.get("/models/list", response_model=ResponseModelList)
 def get_result():
-    return ResponseModelRun(NameModel="static")
+    return ResponseModelRun(NameModel=["Tata", "Hata"])

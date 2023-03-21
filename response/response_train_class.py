@@ -11,5 +11,5 @@ class ResponseTrain(BaseModel):
 
 
 class ResponseTrainResult(BaseModel):
-    file: bytes = File()
+    file: list
     score: str

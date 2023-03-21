@@ -9,7 +9,7 @@ class Status(BaseModel):
 class Start(BaseModel):
     userID: int
     nameFile: str
-    file: bytes = File()
+    comments: list
 
 
 class Result(BaseModel):
