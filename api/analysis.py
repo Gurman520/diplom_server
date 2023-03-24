@@ -1,8 +1,8 @@
 import logging as log
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
-from request.request_class import Status, Start, Result
-from response.response_class import ResponseStatus, ResponseStart, ResponseResult
+from api.request.request_class import Status, Start, Result
+from api.response.response_class import ResponseStatus, ResponseStart, ResponseResult
 from app.predict import start, status, result
 
 # PYTHON_PATH = 'C:/Users/Роман/PycharmProjects/Server_D/venv/Scripts/python.exe'

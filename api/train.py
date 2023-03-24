@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from request.request_train_class import RequestTrain, RequestTrainStatus, RequestTrainResult
-from response.response_train_class import ResponseTrain, ResponseTrainStatus, ResponseTrainResult
+from api.request.request_train_class import RequestTrain, RequestTrainStatus, RequestTrainResult
+from api.response.response_train_class import ResponseTrain, ResponseTrainStatus, ResponseTrainResult
 
 PYTHON_PATH = 'C:/Users/Роман/PycharmProjects/Server_D/venv/Scripts/python.exe'
 status_subprocess = dict()  # Словарь, которй хранит оинформацию о всех запущенных процессах.

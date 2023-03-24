@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from request.request_model_class import RequestModelDelete, RequestModelSet
-from response.response_model_class import ResponseModelSet, ResponseModelDelete, ResponseModelRun, ResponseModelList
+from api.request.request_model_class import RequestModelDelete, RequestModelSet
+from api.response.response_model_class import ResponseModelSet, ResponseModelDelete, ResponseModelRun, ResponseModelList
 
 # PYTHON_PATH = 'C:/Users/Роман/PycharmProjects/Server_D/venv/Scripts/python.exe'
 # status_subprocess = dict()  # Словарь, которй хранит оинформацию о всех запущенных процессах.

@@ -5,10 +5,10 @@ import asyncio
 import logging as log
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse, FileResponse
-from routers import analysis, models, train
+from api import analysis, models, train
 
 app = FastAPI()
-log.basicConfig(level=log.INFO, filename="./log file/log.log", filemode="a",
+log.basicConfig(level=log.INFO, filename="Files/log file/log.log", filemode="a",
                 format="%(asctime)s %(levelname)s %(message)s")
 log.info("Start server")
 

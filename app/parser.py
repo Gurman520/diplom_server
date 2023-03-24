@@ -29,10 +29,10 @@ def read_from_file(uuid, status: int):
     """
         read_to_file(ls: list, uuid, status: int)
         status - int число, которое определяет, какой тип файла необходимо прочитать.
-        1 - Файл для анализа (predict)
-        0 - Файл для обучения (train)
+        1 - Файл с результатами анализа (predict)
+        0 - Файл с результатами обучения (train)
         ls - список, содержащий комментарии
-        В случаии status == 2 будет содержать список списков ["commentary", "Result Predict"]
+        В случаии status == 1 будет содержать список списков ["commentary", "Result Predict"]
     """
     if status == 1:
         name_file = "./FinishPredict/" + str(uuid) + '.csv'
@@ -44,6 +44,5 @@ def read_from_file(uuid, status: int):
     # ls = list(my_df["Comments"])
     # print(ls)
     # return ls
-
 
 # print(parse_in("0d531eec-c80d-11ed-b7b1-94085356212c"))
