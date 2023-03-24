@@ -25,12 +25,25 @@ def write_to_file(ls: list, uuid, status: int):
         my_df.to_csv(name_file, index=False)
 
 
-def read_from_file(uuid):
-    name_file = "./Predict file/" + str(uuid) + '.csv'
-    my_df = pd.read_csv(name_file)
-    ls = list(my_df["Comments"])
-    print(ls)
-    return ls
+def read_from_file(uuid, status: int):
+    """
+        read_to_file(ls: list, uuid, status: int)
+        status - int число, которое определяет, какой тип файла необходимо прочитать.
+        1 - Файл для анализа (predict)
+        0 - Файл для обучения (train)
+        ls - список, содержащий комментарии
+        В случаии status == 2 будет содержать список списков ["commentary", "Result Predict"]
+    """
+    if status == 1:
+        name_file = "./FinishPredict/" + str(uuid) + '.csv'
+        my_df = pd.read_csv(name_file)
+        ls = my_df.values.tolist()
+        return ls
+    # name_file = "./Predict file/" + str(uuid) + '.csv'
+    # my_df = pd.read_csv(name_file)
+    # ls = list(my_df["Comments"])
+    # print(ls)
+    # return ls
 
 
 # print(parse_in("0d531eec-c80d-11ed-b7b1-94085356212c"))
