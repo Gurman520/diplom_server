@@ -1,9 +1,12 @@
+import logging as log
 from fastapi import APIRouter
 from api.request.request_model_class import RequestModelDelete, RequestModelSet
-from api.response.response_model_class import ResponseModelSet, ResponseModelDelete, ResponseModelRun, ResponseModelList
+from api.response.response_model_class import ResponseModelSet, ResponseModelDelete, ResponseModelCurrent, \
+    ResponseModelList
+from app.models import list_models, delete_model, current_model
 
-# PYTHON_PATH = 'C:/Users/Роман/PycharmProjects/Server_D/venv/Scripts/python.exe'
-# status_subprocess = dict()  # Словарь, которй хранит оинформацию о всех запущенных процессах.
+log.basicConfig(level=log.INFO, filename="./Files/log file/models.log", filemode="a",
+                format="%(asctime)s %(levelname)s %(message)s")
 
 router = APIRouter(
     prefix="/api/v1",
@@ -13,20 +16,24 @@ router = APIRouter(
 
 
 @router.put("/models", response_model=ResponseModelSet)
-def get_result(req_result: RequestModelSet):
+def set_models(req_result: RequestModelSet):
     return ResponseModelSet(NameModel="static")
 
 
-@router.delete("/models/{uuid}", response_model=ResponseModelDelete)
-def get_result(uuid: int, req_result: RequestModelDelete):
+@router.delete("/models/{model_id}", response_model=ResponseModelDelete)
+def delete_models(model_id: int):
+    delete_model(model_id)
     return ResponseModelDelete(Message="OK")
 
 
-@router.get("/models", response_model=ResponseModelRun)
-def get_result():
-    return ResponseModelRun(NameModel="static")
+@router.get("/models", response_model=ResponseModelCurrent)
+def current_models():
+    name_model = current_model()
+    return ResponseModelCurrent(NameModel=name_model)
 
 
 @router.get("/models/list", response_model=ResponseModelList)
-def get_result():
-    return ResponseModelRun(NameModel=["Tata", "Hata"])
+def list_models():
+    log.info("Get List models")
+    ls = list_models()
+    return ResponseModelList(Model=ls)

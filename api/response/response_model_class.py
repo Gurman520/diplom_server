@@ -10,9 +10,9 @@ class ResponseModelDelete(BaseModel):
     Message: str
 
 
-class ResponseModelRun(BaseModel):
+class ResponseModelCurrent(BaseModel):
     NameModel: str
 
 
 class ResponseModelList(BaseModel):
-    NameModel: list
+    Models: list
