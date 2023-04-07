@@ -1,14 +1,15 @@
 import os
-# import uvicorn
+import uvicorn
 from typing import Union
 import asyncio
 import configparser
 import logging as log
 from fastapi import FastAPI
-from api import analysis, models, train
-import sqlite3
+from dal.dal import create_connection
 
-conn = sqlite3.connect('./dal/bd/server.sqlite')
+
+name_bd = "server.sqlite"
+cursor = create_connection(name_bd=name_bd)
 config = configparser.ConfigParser()
 config.read('settings.ini', encoding="utf-8")
 PYTHON_PATH = config["Settings"]["PYTHON_PATH"]
@@ -21,6 +22,8 @@ log.basicConfig(level=log.INFO, filename="Files/log file/log.log", filemode="a",
                 format="%(asctime)s %(levelname)s %(message)s")
 log.info("Start server")
 
+from api import analysis, train, models
+
 app.include_router(analysis.router)
 app.include_router(train.router)
 app.include_router(models.router)
@@ -31,6 +34,6 @@ def ping():
     log.info("Get Health-Check")
     return {"Message": "OK"}
 
-#
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="0.0.0.0", port=5000)
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0")

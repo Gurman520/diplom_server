@@ -1,7 +1,7 @@
 import os
 import uuid as u
 import subprocess
-from parser import write_to_file, read_from_file
+from app.parser import write_to_file, read_from_file
 from main import PYTHON_PATH, status_subprocess_predict
 
 
