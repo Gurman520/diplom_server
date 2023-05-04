@@ -5,11 +5,10 @@ import asyncio
 import configparser
 import logging as log
 from fastapi import FastAPI
-from dal.dal import create_connection
+from dal.dal import create_connection, get_list_predict_task
 
 
-name_bd = "server.sqlite"
-cursor = create_connection(name_bd=name_bd)
+connection = create_connection()
 config = configparser.ConfigParser()
 config.read('settings.ini', encoding="utf-8")
 PYTHON_PATH = config["Settings"]["PYTHON_PATH"]
@@ -36,4 +35,4 @@ def ping():
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0")
+    uvicorn.run(app, host="0.0.0.0", port=5000)

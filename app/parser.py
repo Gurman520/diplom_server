@@ -11,7 +11,7 @@ def write_to_file(ls: list, uuid, status: int):
         В случаии status == 2 будет содержать список списков ["commentary", "Result Predict"]
     """
     if status == 1:
-        name_file = "./Predict file/" + str(uuid) + '.csv'
+        name_file = "./Files/Predict file/" + str(uuid) + '.csv'
         list_in_dict = {"Comments": ls}
         my_df = pd.DataFrame(list_in_dict)
         my_df.to_csv(name_file, index=False)

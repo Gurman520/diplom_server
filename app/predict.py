@@ -2,17 +2,19 @@ import os
 import uuid as u
 import subprocess
 from app.parser import write_to_file, read_from_file
-from main import PYTHON_PATH, status_subprocess_predict
+from dal.dal import add_new_predict_task
+from main import PYTHON_PATH, status_subprocess_predict, connection
 
 
 def start(request):
     uuid = u.uuid1()
     write_to_file(request.comments, uuid, 1)
     sp = subprocess.Popen(
-        [PYTHON_PATH, os.path.join('..', 'logic.py '), '-uuid', str(uuid)])
+        [PYTHON_PATH, os.path.join('.\\', 'logic.py '), '-uuid', str(uuid)])
     if sp.stderr is not None:
         return 0, sp.stderr
     status_subprocess_predict.update({uuid: sp})
+    add_new_predict_task(str(uuid), request.userID, 12, connection)
     return uuid, None
 
 
