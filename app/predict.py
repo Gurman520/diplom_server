@@ -3,7 +3,7 @@ import uuid as u
 import subprocess
 from app.parser import write_to_file, read_from_file
 from dal.dal import add_new_predict_task
-from main import PYTHON_PATH, status_subprocess_predict, connection
+from cm.main import PYTHON_PATH, status_subprocess_predict, connection
 
 
 def start(request):

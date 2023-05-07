@@ -5,7 +5,7 @@ import asyncio
 import configparser
 import logging as log
 from fastapi import FastAPI
-from dal.dal import create_connection, get_list_predict_task
+from dal.dal import create_connection
 
 
 connection = create_connection()
@@ -17,7 +17,7 @@ status_subprocess_predict = dict()  # Словарь, которй хранит 
 status_subprocess_train = dict()  # Словарь, которй хранит оинформацию о всех запущенных процессах.
 
 app = FastAPI()
-log.basicConfig(level=log.INFO, filename="Files/log file/log.log", filemode="a",
+log.basicConfig(level=log.INFO, filename="./Files/log file/log.log", filemode="a",
                 format="%(asctime)s %(levelname)s %(message)s")
 log.info("Start server")
 
