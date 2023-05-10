@@ -1,5 +1,3 @@
-# from main import conn
-# import sqlite3
 import psycopg2
 
 
@@ -11,20 +9,19 @@ def create_connection():
     Если файл БД небыл обнаружен, то будет произведено создание файла и создание всех необходимых таблиц.
     :return: connection к БД
     """
-    conn = psycopg2.connect(
-        host="localhost",
-        port=5432,
-        database="server",
-        user="admin",
-        password="pgpwd4habr"
-    )
+    try:
+        conn = psycopg2.connect(
+            host="",
+            port=5432,
+            database="server",
+            user="admin",
+            password="pgpwd4habr"
+        )
+    except:
+        print("Error connection to BD")
+        return None
     create_table(conn)
     return conn
-    # conn = sqlite3.connect(r'./dal/bd/' + name_bd)
-    # cursor = conn.cursor()
-    # create_table(cursor)
-    # conn.commit()
-    # conn.close()
 
 
 def create_table(conn):

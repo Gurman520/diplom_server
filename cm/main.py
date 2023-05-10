@@ -1,7 +1,3 @@
-import os
-import uvicorn
-from typing import Union
-import asyncio
 import configparser
 import logging as log
 from fastapi import FastAPI
@@ -32,7 +28,3 @@ app.include_router(models.router)
 def ping():
     log.info("Get Health-Check")
     return {"Message": "OK"}
-
-
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=5000)
