@@ -13,7 +13,7 @@ def create_connection():
     """
     conn = psycopg2.connect(
         host="localhost",
-        port=5431,
+        port=5432,
         database="server",
         user="admin",
         password="pgpwd4habr"
