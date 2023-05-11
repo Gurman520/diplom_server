@@ -7,7 +7,7 @@ class ResponseModelSet(BaseModel):
 
 
 class ResponseModelDelete(BaseModel):
-    Message: str
+    NameModel: str
 
 
 class ResponseModelCurrent(BaseModel):

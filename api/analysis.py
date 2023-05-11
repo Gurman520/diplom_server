@@ -37,20 +37,30 @@ def status_analysis(req_status: Status):
     elif return_code is None:
         return ResponseStatus(Message="Processing")
     else:
-        return JSONResponse(content={"Message": "Ошибка в работе алгоритма анализа. Returncode: " + str(subpr.returncode)},
-                            status_code=400)
+        return JSONResponse(
+            content={"Message": "Ошибка в работе алгоритма анализа. Returncode: " + str(subpr.returncode)},
+            status_code=400)
 
 
 @router.get("/predict/result/{uuid}", response_model=ResponseResult)
 def get_result(req_result: Result):
     log.info("Get result predict")
-    s, ls = result(req_result)
-    if s is None:
+    stat, ls = result(req_result)
+    if stat is None:
         return JSONResponse(
             content={"Message": "Не верный uuid. Задачи с таким uuid не сущетсвует."},
             status_code=404)
-    if len(ls) == 0:
+    elif stat == 0 and len(ls) == 0:
         return JSONResponse(
-            content={"Message": "Нет такого файла"},
+            content={"Message": "Проблема с формированием файла с результами"},
             status_code=404)
-    return ResponseResult(file=ls)
+    elif stat == 0 and len(ls) > 0:
+        return ResponseResult(file=ls)
+    elif stat == 1:
+        return JSONResponse(content={"Message": "Процесс анализа не завершён"}, status_code=200)
+    else:
+        return JSONResponse(
+            content={"Message": "Ошибка в работе алгоритма анализа. Returncode: " + str(stat)},
+            status_code=400)
+
+

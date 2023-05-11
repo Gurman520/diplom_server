@@ -16,7 +16,7 @@ def write_to_file(ls: list, uuid, status: int):
         my_df = pd.DataFrame(list_in_dict)
         my_df.to_csv(name_file, index=False)
     elif status == 0:
-        name_file = "./Train file/" + str(uuid) + '.csv'
+        name_file = "./Files/Train file/" + str(uuid) + '.csv'
         list_in_dict = {"Comments": [], "Predict": []}
         for i in ls:
             list_in_dict["Comments"].append(i[0])
@@ -35,7 +35,7 @@ def read_from_file(uuid, status: int):
         В случаии status == 1 будет содержать список списков ["commentary", "Result Predict"]
     """
     if status == 1:
-        name_file = "./FinishPredict/" + str(uuid) + '.csv'
+        name_file = "./Files/FinishPredict/" + str(uuid) + '.csv'
         my_df = pd.read_csv(name_file)
         ls = my_df.values.tolist()
         return ls
@@ -44,5 +44,3 @@ def read_from_file(uuid, status: int):
     # ls = list(my_df["Comments"])
     # print(ls)
     # return ls
-
-# print(parse_in("0d531eec-c80d-11ed-b7b1-94085356212c"))
