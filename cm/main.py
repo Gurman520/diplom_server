@@ -1,3 +1,4 @@
+import os
 import configparser
 import logging as log
 from fastapi import FastAPI
@@ -13,9 +14,10 @@ if connection is None:
 else:
     log.info("Connection BD successful")
 config = configparser.ConfigParser()
-config.read('./settings.ini', encoding="utf-8")
+config.read('settings.ini', encoding="utf-8")
 PYTHON_PATH = config["Settings"]["PYTHON_PATH"]
 NAME_FILE_PREDICT = config["Settings"]["NAME_FILE_PREDICT"]
+NAME_FILE_TRAIN = config["Settings"]["NAME_FILE_TRAIN"]
 print(PYTHON_PATH)
 status_subprocess_predict = dict()  # Словарь, которй хранит оинформацию о всех запущенных процессах.
 status_subprocess_train = dict()  # Словарь, которй хранит оинформацию о всех запущенных процессах.

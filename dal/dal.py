@@ -50,20 +50,19 @@ def create_table(conn):
     """)
 
     cur.execute("""CREATE TABLE IF NOT EXISTS Models(
-           ID SERIAL PRIMARY KEY,
-           nameFile TEXT,
-           nameModel TEXT,
-           score REAL,
-           toDoWork bool);
-        """)
+        ID SERIAL PRIMARY KEY,
+        nameFile TEXT,
+        nameModel TEXT,
+        score REAL,
+        toDoWork bool);
+    """)
 
     cur.execute("""CREATE TABLE IF NOT EXISTS train(
-           trainID SERIAL PRIMARY KEY,
-           uuid TEXT,
-           userid INTEGER,
-           status INT,
-           nameFile TEXT);
-        """)
+        trainID SERIAL PRIMARY KEY,
+        uuid TEXT,
+        userid INTEGER,
+        status INT);
+    """)
 
     cur.execute(
         "INSERT INTO Models (nameFile, nameModel, score ,toDoWork) VALUES ('startModel.h5', 'startModel', 85, true);")
@@ -184,15 +183,33 @@ def get_model_for_name(model_name, conn):
 def delete_model_sql(model_id, conn):
     cur = conn.cursor()
     delete_query = "Delete from models where id = %s"
-    cur.execute(delete_query, (model_id, ))
+    cur.execute(delete_query, (model_id,))
     conn.commit()
     cur.close()
 
 
+def add_new_train_task(uuid, user_id, conn):
+    cur = conn.cursor()
+    add_query = "INSERT INTO train (uuid, userid, status) VALUES(%s, %s, %s);"
+    cur.execute(add_query, (uuid, user_id, int(1)))
+    conn.commit()
+    cur.close()
 
-def add_new_train_task(uuid):
-    pass
+
+def set_train_status(uuid, status, conn):
+    cur = conn.cursor()
+    set_query = "Update train set status = %s where uuid = %s"
+    cur.execute(set_query, (status, uuid))
+    conn.commit()
+    cur.close()
 
 
-def delete_train_task(uuid):
-    pass
+def get_train_task(uuid: str, conn):
+    cur = conn.cursor()
+    select_query = "SELECT status FROM train WHERE uuid = %s"
+    cur.execute(select_query, (uuid,))
+    train_task = cur.fetchall()
+    result = train_task[0][0]
+    conn.commit()
+    cur.close()
+    return result

@@ -1,6 +1,6 @@
 import os
 from dal.dal import get_basic_model, get_list_models, set_basic_model, get_model, get_model_for_name, delete_model_sql
-from cmd.main import connection
+from cm.main import connection
 import logging as log
 
 log.basicConfig(level=log.INFO, filename="./log file/app_models.log", filemode="a",
@@ -28,7 +28,6 @@ def set_model(name_model):
 
 def delete_model(model_id):
     model = get_model(model_id, connection)
-    # Так же можно добавить проаерку, что перед удалением, необходимо удостоверится, что модель не используется в каких либо задачах
     if model[4]:
         return None, "Current model"
     if os.path.isfile('./Files/Models/' + model[1]):

@@ -3,7 +3,7 @@ import uuid as u
 import subprocess
 from app.parser import write_to_file, read_from_file
 from dal.dal import add_new_predict_task, set_predict_status, get_predict_task
-from cmd.main import PYTHON_PATH, NAME_FILE_PREDICT, status_subprocess_predict, connection
+from cm.main import PYTHON_PATH, NAME_FILE_PREDICT, status_subprocess_predict, connection
 
 
 def start(request):
@@ -14,7 +14,7 @@ def start(request):
     if sp.stderr is not None:
         return 0, sp.stderr
     status_subprocess_predict.update({uuid: sp})
-    add_new_predict_task(str(uuid), request.userID, 12, connection)
+    add_new_predict_task(str(uuid), request.userID, 1, connection)
     return uuid, None
 
 

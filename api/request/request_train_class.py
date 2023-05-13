@@ -8,7 +8,6 @@ class RequestTrainStatus(BaseModel):
 
 class RequestTrain(BaseModel):
     userID: int
-    nameFile: str
     file: list
 
 
