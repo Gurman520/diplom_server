@@ -1,12 +1,9 @@
 import logging as log
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from api.request.request_class import Status, Start, Result
 from api.response.response_class import ResponseStatus, ResponseStart, ResponseResult
 from app.predict import start, status, result
-
-log.basicConfig(level=log.INFO, filename="./log file/predict.log", filemode="a",
-                format="%(asctime)s %(levelname)s %(message)s")
 
 router = APIRouter(
     prefix="/api/v1",
@@ -20,7 +17,7 @@ def start_analysis(req_start: Start):
     log.info("Post start predict")
     uuid, err = start(req_start)
     if err is not None:
-        return HTTPException(status_code=400, detail="Ошибка запуска анализа: " + str(err))
+        return JSONResponse(content={"Message": f"Ошибка запуска анализа: {str(err)}"}, status_code=400)
     return ResponseStart(UUID=str(uuid))
 
 
@@ -38,7 +35,7 @@ def status_analysis(req_status: Status):
         return ResponseStatus(Message="Processing")
     else:
         return JSONResponse(
-            content={"Message": "Ошибка в работе алгоритма анализа. Returncode: " + str(subpr.returncode)},
+            content={"Message": f"Ошибка в работе алгоритма анализа. Returncode: {str(subpr.returncode)}"},
             status_code=400)
 
 
@@ -62,5 +59,3 @@ def get_result(req_result: Result):
         return JSONResponse(
             content={"Message": "Ошибка в работе алгоритма анализа. Returncode: " + str(stat)},
             status_code=400)
-
-

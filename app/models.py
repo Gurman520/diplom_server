@@ -3,9 +3,6 @@ from dal.dal import get_basic_model, get_list_models, set_basic_model, get_model
 from cm.main import connection
 import logging as log
 
-log.basicConfig(level=log.INFO, filename="./log file/app_models.log", filemode="a",
-                format="%(asctime)s %(levelname)s %(message)s")
-
 
 def list_model():
     ls = get_list_models(connection)

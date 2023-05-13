@@ -1,24 +1,16 @@
-import os
+from app import init_log
 import configparser
+import uvicorn
 import logging as log
 from fastapi import FastAPI
-from dal.dal import create_connection, add_new_model
-from fastapi.responses import JSONResponse
+from dal.dal import create_connection
 
-log.basicConfig(level=log.INFO, filename="./Files/log file/main.log", filemode="a",
-                format="%(asctime)s %(levelname)s %(message)s")
-log.info("---------------------")
 connection = create_connection()
-if connection is None:
-    log.info("Error connection BD. Server run with out BD.")
-else:
-    log.info("Connection BD successful")
 config = configparser.ConfigParser()
 config.read('settings.ini', encoding="utf-8")
 PYTHON_PATH = config["Settings"]["PYTHON_PATH"]
 NAME_FILE_PREDICT = config["Settings"]["NAME_FILE_PREDICT"]
 NAME_FILE_TRAIN = config["Settings"]["NAME_FILE_TRAIN"]
-print(PYTHON_PATH)
 status_subprocess_predict = dict()  # Словарь, которй хранит оинформацию о всех запущенных процессах.
 status_subprocess_train = dict()  # Словарь, которй хранит оинформацию о всех запущенных процессах.
 
@@ -38,9 +30,5 @@ def ping():
     return {"Message": "OK"}
 
 
-@app.post("/api/v1/add_new_model")
-def add():
-    add_new_model("SecondModel.h5", "SecondModel", 90, connection)
-    return JSONResponse(
-        content={"Message": "Запись успешно добавлена"},
-        status_code=200)
+if __name__ == "__main__":
+    uvicorn.run(app)

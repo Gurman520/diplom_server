@@ -6,8 +6,6 @@ from api.response.response_model_class import ResponseModelSet, ResponseModelDel
     ResponseModelList
 from app.models import list_model, delete_model, current_model, set_model
 
-log.basicConfig(level=log.INFO, filename="./Files/log file/Models.log", filemode="a",
-                format="%(asctime)s %(levelname)s %(message)s")
 
 router = APIRouter(
     prefix="/api/v1",
