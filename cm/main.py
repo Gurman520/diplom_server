@@ -4,14 +4,19 @@ import uvicorn
 import logging as log
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
-from dal.dal import create_connection, add_new_model
 
-connection = create_connection()
+
 config = configparser.ConfigParser()
 config.read('settings.ini', encoding="utf-8")
 PYTHON_PATH = config["Settings"]["PYTHON_PATH"]
 NAME_FILE_PREDICT = config["Settings"]["NAME_FILE_PREDICT"]
 NAME_FILE_TRAIN = config["Settings"]["NAME_FILE_TRAIN"]
+BD_HOST = config["Settings"]["BD_HOST"]
+
+from dal.dal import create_connection
+connection = create_connection(BD_HOST)
+
+
 status_subprocess_predict = dict()  # Словарь, которй хранит оинформацию о всех запущенных процессах.
 status_subprocess_train = dict()  # Словарь, которй хранит оинформацию о всех запущенных процессах.
 

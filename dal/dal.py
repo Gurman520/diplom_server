@@ -2,14 +2,14 @@ import psycopg2
 import logging as log
 
 
-def create_connection():
+def create_connection(BD_HOST):
     """
     Создание соединения с БД, а так же добавление таблиц в БД, если они не найдены в БД
     :return: соединение с БД
     """
     try:
         conn = psycopg2.connect(
-            host="",
+            host=BD_HOST,
             port=5432,
             database="server",
             user="admin",
