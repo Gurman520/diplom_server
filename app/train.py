@@ -1,13 +1,13 @@
 import os
 import uuid as u
 import subprocess
-from app.parser import write_to_file, read_from_file
-from dal.dal import add_new_train_task, set_train_status, get_train_task
+from app.parser import write_to_file
+from dal.dal import add_new_train_task, set_train_status, get_train_task, get_model_for_name
 from cm.main import PYTHON_PATH, NAME_FILE_TRAIN, status_subprocess_train, connection
 
 
 def start(request):
-    uuid = u.uuid1()
+    uuid = u.uuid4()
     write_to_file(request.file, uuid, 0)
     sp = subprocess.Popen(
         [PYTHON_PATH, os.path.join('.\\', NAME_FILE_TRAIN), '-uuid', str(uuid)])
@@ -37,14 +37,12 @@ def result(request):
     uuid = request.uuid
     subpr = status_subprocess_train.get(u.UUID(uuid))
     if subpr is None:
-        return None, []
+        return None, "", 0
     stat = get_train_task(str(uuid), connection)
     if stat == 1:
-        return stat, []
+        return stat, "", 0
     elif stat == 0:
-        if os.path.isfile('./Files/Train/result/' + str(uuid) + '.csv'):
-            ls = read_from_file(uuid, 0)
-            return stat, ls
-        return stat, []
+        model = get_model_for_name(uuid, connection)
+        return stat, model[1], model[3]
     else:
-        return stat, []
+        return stat, "", 0

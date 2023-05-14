@@ -11,5 +11,5 @@ class ResponseTrain(BaseModel):
 
 
 class ResponseTrainResult(BaseModel):
-    file: list
-    score: str
+    Model_name: list
+    Score: str

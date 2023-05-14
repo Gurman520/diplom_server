@@ -52,7 +52,6 @@ def create_table(conn):
 
     cur.execute("""CREATE TABLE IF NOT EXISTS Models(
         ID SERIAL PRIMARY KEY,
-        nameFile TEXT,
         nameModel TEXT,
         score REAL,
         toDoWork bool);
@@ -66,7 +65,7 @@ def create_table(conn):
     """)
 
     cur.execute(
-        "INSERT INTO Models (nameFile, nameModel, score ,toDoWork) VALUES ('startModel.h5', 'startModel', 85, true);")
+        "INSERT INTO Models (nameModel, score ,toDoWork) VALUES ('startModel', 85, true);")
     conn.commit()
     cur.close()
     log.info("Create table successful")
@@ -137,7 +136,7 @@ def get_basic_model(conn):
     model = cur.fetchall()
     conn.commit()
     cur.close()
-    return model[0][2]
+    return model[0]
 
 
 def get_list_models(conn):
@@ -155,36 +154,35 @@ def get_list_models(conn):
     return ls_models
 
 
-def set_basic_model(name_model, conn):
+def set_basic_model(model_id, conn):
     """
     Установить новую основную модель
-    :param name_model: Имя новой модели
+    :param model_id: Имя новой модели
     :param conn: Соединение с БД
     :return: Возвращает вызов имя основной модели
     """
     cur = conn.cursor()
     set_false_model = "Update Models set toDoWork = %s where toDoWork = %s"
-    set_true_model = "Update Models set toDoWork = %s WHERE nameModel = %s"
+    set_true_model = "Update Models set toDoWork = %s WHERE id = %s"
     cur.execute(set_false_model, (False, True))
     conn.commit()
-    cur.execute(set_true_model, (True, name_model))
+    cur.execute(set_true_model, (True, model_id))
     conn.commit()
     cur.close()
     return get_basic_model(conn)
 
 
-def add_new_model(name_file, name_model, score, conn):
+def add_new_model(name_model, score, conn):
     """
     Добавление новой модели в БД
-    :param name_file:
     :param name_model: Имя модели
     :param score: Оценка модели
     :param conn: Соединение с БД
     :return:
     """
     cur = conn.cursor()
-    add_model_query = "INSERT INTO Models (nameFile, nameModel, score, toDoWork) VALUES(%s, %s, %s, %s);"
-    cur.execute(add_model_query, (name_file, name_model, score, False))
+    add_model_query = "INSERT INTO Models (nameModel, score, toDoWork) VALUES(%s, %s, %s);"
+    cur.execute(add_model_query, (name_model, score, False))
     conn.commit()
     cur.close()
     return get_model_for_name(name_model, conn)

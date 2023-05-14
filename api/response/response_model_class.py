@@ -3,15 +3,15 @@ from fastapi import File
 
 
 class ResponseModelSet(BaseModel):
-    NameModel: str
+    Model: list
 
 
 class ResponseModelDelete(BaseModel):
-    NameModel: str
+    Model: list
 
 
 class ResponseModelCurrent(BaseModel):
-    NameModel: str
+    Model: list
 
 
 class ResponseModelList(BaseModel):

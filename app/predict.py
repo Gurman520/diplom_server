@@ -8,7 +8,7 @@ from cm.main import PYTHON_PATH, NAME_FILE_PREDICT, status_subprocess_predict, c
 
 
 def start(request):
-    uuid = u.uuid1()
+    uuid = u.uuid4()
     write_to_file(request.comments, uuid, 1)
     sp = subprocess.Popen(
         [PYTHON_PATH, os.path.join('.\\', NAME_FILE_PREDICT), '-uuid', str(uuid), '-model', str(current_models)])

@@ -3,7 +3,8 @@ import configparser
 import uvicorn
 import logging as log
 from fastapi import FastAPI
-from dal.dal import create_connection
+from fastapi.responses import RedirectResponse
+from dal.dal import create_connection, add_new_model
 
 connection = create_connection()
 config = configparser.ConfigParser()
@@ -28,6 +29,11 @@ app.include_router(models.router)
 def ping():
     log.info("Get Health-Check")
     return {"Message": "OK"}
+
+
+@app.get("/")
+def doc():
+    return RedirectResponse("/docs#/")
 
 
 if __name__ == "__main__":

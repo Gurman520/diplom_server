@@ -1,0 +1,739 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "FastAPI",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/predict": {
+      "post": {
+        "tags": [
+          "predict"
+        ],
+        "summary": "Start Analysis",
+        "operationId": "start_analysis_api_v1_predict_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Start"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStart"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/predict/status/{uuid}": {
+      "get": {
+        "tags": [
+          "predict"
+        ],
+        "summary": "Status Analysis",
+        "operationId": "status_analysis_api_v1_predict_status__uuid__get",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Status"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseStatus"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/predict/result/{uuid}": {
+      "get": {
+        "tags": [
+          "predict"
+        ],
+        "summary": "Get Result",
+        "operationId": "get_result_api_v1_predict_result__uuid__get",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Result"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseResult"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/teach": {
+      "post": {
+        "tags": [
+          "teach"
+        ],
+        "summary": "Start Teach",
+        "operationId": "start_teach_api_v1_teach_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestTrain"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTrain"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/teach/status/{uuid}": {
+      "get": {
+        "tags": [
+          "teach"
+        ],
+        "summary": "Get Status",
+        "operationId": "get_status_api_v1_teach_status__uuid__get",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestTrainStatus"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTrainStatus"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/teach/result/{uuid}": {
+      "get": {
+        "tags": [
+          "teach"
+        ],
+        "summary": "Get Result",
+        "operationId": "get_result_api_v1_teach_result__uuid__get",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestTrainResult"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTrainResult"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/models": {
+      "get": {
+        "tags": [
+          "models"
+        ],
+        "summary": "Current Models",
+        "operationId": "current_models_api_v1_models_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseModelCurrent"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "models"
+        ],
+        "summary": "Set Models",
+        "operationId": "set_models_api_v1_models_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestModelSet"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseModelSet"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/models/{model_id}": {
+      "delete": {
+        "tags": [
+          "models"
+        ],
+        "summary": "Delete Models",
+        "operationId": "delete_models_api_v1_models__model_id__delete",
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Model Id",
+              "type": "integer"
+            },
+            "name": "model_id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseModelDelete"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/models/list": {
+      "get": {
+        "tags": [
+          "models"
+        ],
+        "summary": "List Models",
+        "operationId": "list_models_api_v1_models_list_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseModelList"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/api/v1/Health-Check": {
+      "get": {
+        "summary": "Ping",
+        "operationId": "ping_api_v1_Health_Check_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Doc",
+        "operationId": "doc__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "title": "HTTPValidationError",
+        "type": "object",
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "RequestModelSet": {
+        "title": "RequestModelSet",
+        "required": [
+          "ModelID"
+        ],
+        "type": "object",
+        "properties": {
+          "ModelID": {
+            "title": "Modelid",
+            "type": "integer"
+          }
+        }
+      },
+      "RequestTrain": {
+        "title": "RequestTrain",
+        "required": [
+          "userID",
+          "file"
+        ],
+        "type": "object",
+        "properties": {
+          "userID": {
+            "title": "Userid",
+            "type": "integer"
+          },
+          "file": {
+            "title": "File",
+            "type": "array",
+            "items": {}
+          }
+        }
+      },
+      "RequestTrainResult": {
+        "title": "RequestTrainResult",
+        "required": [
+          "uuid"
+        ],
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "title": "Uuid",
+            "type": "string"
+          }
+        }
+      },
+      "RequestTrainStatus": {
+        "title": "RequestTrainStatus",
+        "required": [
+          "uuid"
+        ],
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "title": "Uuid",
+            "type": "string"
+          }
+        }
+      },
+      "ResponseModelCurrent": {
+        "title": "ResponseModelCurrent",
+        "required": [
+          "Model"
+        ],
+        "type": "object",
+        "properties": {
+          "Model": {
+            "title": "Model",
+            "type": "array",
+            "items": {}
+          }
+        }
+      },
+      "ResponseModelDelete": {
+        "title": "ResponseModelDelete",
+        "required": [
+          "Model"
+        ],
+        "type": "object",
+        "properties": {
+          "Model": {
+            "title": "Model",
+            "type": "array",
+            "items": {}
+          }
+        }
+      },
+      "ResponseModelList": {
+        "title": "ResponseModelList",
+        "required": [
+          "Models"
+        ],
+        "type": "object",
+        "properties": {
+          "Models": {
+            "title": "Models",
+            "type": "array",
+            "items": {}
+          }
+        }
+      },
+      "ResponseModelSet": {
+        "title": "ResponseModelSet",
+        "required": [
+          "Model"
+        ],
+        "type": "object",
+        "properties": {
+          "Model": {
+            "title": "Model",
+            "type": "array",
+            "items": {}
+          }
+        }
+      },
+      "ResponseResult": {
+        "title": "ResponseResult",
+        "required": [
+          "file"
+        ],
+        "type": "object",
+        "properties": {
+          "file": {
+            "title": "File",
+            "type": "array",
+            "items": {}
+          }
+        }
+      },
+      "ResponseStart": {
+        "title": "ResponseStart",
+        "required": [
+          "UUID"
+        ],
+        "type": "object",
+        "properties": {
+          "UUID": {
+            "title": "Uuid",
+            "type": "string"
+          }
+        }
+      },
+      "ResponseStatus": {
+        "title": "ResponseStatus",
+        "required": [
+          "Message"
+        ],
+        "type": "object",
+        "properties": {
+          "Message": {
+            "title": "Message",
+            "type": "string"
+          }
+        }
+      },
+      "ResponseTrain": {
+        "title": "ResponseTrain",
+        "required": [
+          "UUID"
+        ],
+        "type": "object",
+        "properties": {
+          "UUID": {
+            "title": "Uuid",
+            "type": "string"
+          }
+        }
+      },
+      "ResponseTrainResult": {
+        "title": "ResponseTrainResult",
+        "required": [
+          "Model_name",
+          "Score"
+        ],
+        "type": "object",
+        "properties": {
+          "Model_name": {
+            "title": "Model Name",
+            "type": "array",
+            "items": {}
+          },
+          "Score": {
+            "title": "Score",
+            "type": "string"
+          }
+        }
+      },
+      "ResponseTrainStatus": {
+        "title": "ResponseTrainStatus",
+        "required": [
+          "Message"
+        ],
+        "type": "object",
+        "properties": {
+          "Message": {
+            "title": "Message",
+            "type": "string"
+          }
+        }
+      },
+      "Result": {
+        "title": "Result",
+        "required": [
+          "uuid"
+        ],
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "title": "Uuid",
+            "type": "string"
+          }
+        }
+      },
+      "Start": {
+        "title": "Start",
+        "required": [
+          "userID",
+          "nameFile",
+          "comments"
+        ],
+        "type": "object",
+        "properties": {
+          "userID": {
+            "title": "Userid",
+            "type": "integer"
+          },
+          "nameFile": {
+            "title": "Namefile",
+            "type": "string"
+          },
+          "comments": {
+            "title": "Comments",
+            "type": "array",
+            "items": {}
+          }
+        }
+      },
+      "Status": {
+        "title": "Status",
+        "required": [
+          "uuid"
+        ],
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "title": "Uuid",
+            "type": "string"
+          }
+        }
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "loc": {
+            "title": "Location",
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            }
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

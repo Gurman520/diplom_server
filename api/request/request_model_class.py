@@ -3,4 +3,4 @@ from pydantic import BaseModel
 
 
 class RequestModelSet(BaseModel):
-    NameModel: str
+    ModelID: int
