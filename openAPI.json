@@ -1,7 +1,8 @@
 {
   "openapi": "3.0.2",
   "info": {
-    "title": "FastAPI",
+    "title": "Machine Learning Server",
+    "description": "\nДанный сервер может производить анализ комментариев на предмет экстремизма\n",
     "version": "0.1.0"
   },
   "paths": {
@@ -56,16 +57,17 @@
         ],
         "summary": "Status Analysis",
         "operationId": "status_analysis_api_v1_predict_status__uuid__get",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Status"
-              }
-            }
-          },
-          "required": true
-        },
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Uuid",
+              "type": "string"
+            },
+            "name": "uuid",
+            "in": "path"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -100,16 +102,17 @@
         ],
         "summary": "Get Result",
         "operationId": "get_result_api_v1_predict_result__uuid__get",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Result"
-              }
-            }
-          },
-          "required": true
-        },
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Uuid",
+              "type": "string"
+            },
+            "name": "uuid",
+            "in": "path"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -188,16 +191,17 @@
         ],
         "summary": "Get Status",
         "operationId": "get_status_api_v1_teach_status__uuid__get",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RequestTrainStatus"
-              }
-            }
-          },
-          "required": true
-        },
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Uuid",
+              "type": "string"
+            },
+            "name": "uuid",
+            "in": "path"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -232,16 +236,17 @@
         ],
         "summary": "Get Result",
         "operationId": "get_result_api_v1_teach_result__uuid__get",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RequestTrainResult"
-              }
-            }
-          },
-          "required": true
-        },
+        "parameters": [
+          {
+            "required": true,
+            "schema": {
+              "title": "Uuid",
+              "type": "string"
+            },
+            "name": "uuid",
+            "in": "path"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -452,6 +457,47 @@
           }
         }
       },
+      "PredictComments": {
+        "title": "PredictComments",
+        "required": [
+          "number",
+          "comment"
+        ],
+        "type": "object",
+        "properties": {
+          "number": {
+            "title": "Number",
+            "type": "integer"
+          },
+          "comment": {
+            "title": "Comment",
+            "type": "string"
+          }
+        }
+      },
+      "PredictResultComments": {
+        "title": "PredictResultComments",
+        "required": [
+          "number",
+          "comment",
+          "class_comment"
+        ],
+        "type": "object",
+        "properties": {
+          "number": {
+            "title": "Number",
+            "type": "integer"
+          },
+          "comment": {
+            "title": "Comment",
+            "type": "string"
+          },
+          "class_comment": {
+            "title": "Class Comment",
+            "type": "integer"
+          }
+        }
+      },
       "RequestModelSet": {
         "title": "RequestModelSet",
         "required": [
@@ -469,7 +515,7 @@
         "title": "RequestTrain",
         "required": [
           "userID",
-          "file"
+          "comments"
         ],
         "type": "object",
         "properties": {
@@ -477,36 +523,12 @@
             "title": "Userid",
             "type": "integer"
           },
-          "file": {
-            "title": "File",
+          "comments": {
+            "title": "Comments",
             "type": "array",
-            "items": {}
-          }
-        }
-      },
-      "RequestTrainResult": {
-        "title": "RequestTrainResult",
-        "required": [
-          "uuid"
-        ],
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "title": "Uuid",
-            "type": "string"
-          }
-        }
-      },
-      "RequestTrainStatus": {
-        "title": "RequestTrainStatus",
-        "required": [
-          "uuid"
-        ],
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "title": "Uuid",
-            "type": "string"
+            "items": {
+              "$ref": "#/components/schemas/TrainComments"
+            }
           }
         }
       },
@@ -569,14 +591,16 @@
       "ResponseResult": {
         "title": "ResponseResult",
         "required": [
-          "file"
+          "comments"
         ],
         "type": "object",
         "properties": {
-          "file": {
-            "title": "File",
+          "comments": {
+            "title": "Comments",
             "type": "array",
-            "items": {}
+            "items": {
+              "$ref": "#/components/schemas/PredictResultComments"
+            }
           }
         }
       },
@@ -622,13 +646,13 @@
       "ResponseTrainResult": {
         "title": "ResponseTrainResult",
         "required": [
-          "Model_name",
+          "Model",
           "Score"
         ],
         "type": "object",
         "properties": {
-          "Model_name": {
-            "title": "Model Name",
+          "Model": {
+            "title": "Model",
             "type": "array",
             "items": {}
           },
@@ -651,24 +675,10 @@
           }
         }
       },
-      "Result": {
-        "title": "Result",
-        "required": [
-          "uuid"
-        ],
-        "type": "object",
-        "properties": {
-          "uuid": {
-            "title": "Uuid",
-            "type": "string"
-          }
-        }
-      },
       "Start": {
         "title": "Start",
         "required": [
           "userID",
-          "nameFile",
           "comments"
         ],
         "type": "object",
@@ -677,27 +687,35 @@
             "title": "Userid",
             "type": "integer"
           },
-          "nameFile": {
-            "title": "Namefile",
-            "type": "string"
-          },
           "comments": {
             "title": "Comments",
             "type": "array",
-            "items": {}
+            "items": {
+              "$ref": "#/components/schemas/PredictComments"
+            }
           }
         }
       },
-      "Status": {
-        "title": "Status",
+      "TrainComments": {
+        "title": "TrainComments",
         "required": [
-          "uuid"
+          "number",
+          "comment",
+          "class_comment"
         ],
         "type": "object",
         "properties": {
-          "uuid": {
-            "title": "Uuid",
+          "number": {
+            "title": "Number",
+            "type": "integer"
+          },
+          "comment": {
+            "title": "Comment",
             "type": "string"
+          },
+          "class_comment": {
+            "title": "Class Comment",
+            "type": "integer"
           }
         }
       },
@@ -735,5 +753,19 @@
         }
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "predict",
+      "description": "Анализ комментариев на предмет экстремизма\nСодержит три метода:\nPredict - начало анализа\nStatus - Получение статуса анализа\nResult - Получение результата анализа"
+    },
+    {
+      "name": "models",
+      "description": "Методы по работе с уже обученными моделями\nСодержит 4 метода по работе с моделями: \nCurrent models - Модель, которая установлена по умолчанию\nSet models - Установить другую модель как модель по умолчанию\nDelete model - удалить модель из сервиса\nList models - Получить список всех моделей"
+    },
+    {
+      "name": "teach",
+      "description": "Методы по работе с обучением новых моделей\nсодержит 3 метода:\nStart teach - Старт обучения\nStatus - полчение статуса процесса обучения\nResult - получение результата обучения"
+    }
+  ]
 }

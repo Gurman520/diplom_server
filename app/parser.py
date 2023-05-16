@@ -1,4 +1,5 @@
 import pandas as pd
+from api.response.response_class import PredictResultComments
 
 
 def write_to_file(ls: list, uuid, status: int):
@@ -14,23 +15,29 @@ def write_to_file(ls: list, uuid, status: int):
     """
     if status == 11:
         name_file = "./Files/Predict/Finish/" + str(uuid) + '.csv'
-        list_in_dict = {"Comments": [], "Predict": []}
+        list_in_dict = {"Numbers": [], "Comments": [], "Predict": []}
         for i in ls:
-            list_in_dict["Comments"].append(i[0])
-            list_in_dict["Predict"].append(i[1])
+            list_in_dict["Numbers"].append(i[0])
+            list_in_dict["Comments"].append(i[1])
+            list_in_dict["Predict"].append(i[2])
         my_df = pd.DataFrame(list_in_dict)
         my_df.to_csv(name_file, index=False)
     elif status == 1:
         name_file = "./Files/Predict/" + str(uuid) + '.csv'
-        list_in_dict = {"Comments": ls}
+        list_in_dict = {"Number": [], "Comments": []}
+        for i in ls:
+            list_in_dict["Number"].append(i.number)
+            list_in_dict["Comments"].append(i.comment)
         my_df = pd.DataFrame(list_in_dict)
         my_df.to_csv(name_file, index=False)
+        print("OK")
     elif status == 0:
         name_file = "./Files/Train/" + str(uuid) + '.csv'
-        list_in_dict = {"Comments": [], "Predict": []}
+        list_in_dict = {"Numbers": [], "Comments": [], "Predict": []}
         for i in ls:
-            list_in_dict["Comments"].append(i[0])
-            list_in_dict["Predict"].append(i[1])
+            list_in_dict["Numbers"].append(i.number)
+            list_in_dict["Comments"].append(i.comment)
+            list_in_dict["Predict"].append(i.class_comment)
         my_df = pd.DataFrame(list_in_dict)
         my_df.to_csv(name_file, index=False)
 
@@ -55,7 +62,10 @@ def read_from_file(uuid, status: int):
         name_file = "./Files/Predict/Finish/" + str(uuid) + '.csv'
         my_df = pd.read_csv(name_file)
         ls = my_df.values.tolist()
-        return ls
+        l = list()
+        for i in ls:
+            l.append(PredictResultComments(number=i[0], comment=i[1], class_comment=i[2]))
+        return l
     if status == 0:
         name_file = "./Files/Train/" + str(uuid) + '.csv'
         my_df = pd.read_csv(name_file)

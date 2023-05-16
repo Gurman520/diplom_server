@@ -18,9 +18,9 @@ def start(request):
     return uuid, None
 
 
-def status(request):
-    uuid = request.uuid
-    subpr = status_subprocess_train.get(u.UUID(uuid))
+def status(req_uuid):
+    uuid = u.UUID(req_uuid)
+    subpr = status_subprocess_train.get(uuid)
     if subpr is None:
         return subpr, 0
     return_code = subpr.poll()  # Получение информации о статусе подпроцесса. Завершен, в процессе, прерван.
@@ -33,9 +33,9 @@ def status(request):
     return subpr, return_code
 
 
-def result(request):
-    uuid = request.uuid
-    subpr = status_subprocess_train.get(u.UUID(uuid))
+def result(req_uuid):
+    uuid = u.UUID(req_uuid)
+    subpr = status_subprocess_train.get(uuid)
     if subpr is None:
         return None, "", 0
     stat = get_train_task(str(uuid), connection)

@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from fastapi import File
 
 
 class ResponseTrainStatus(BaseModel):
@@ -11,5 +10,5 @@ class ResponseTrain(BaseModel):
 
 
 class ResponseTrainResult(BaseModel):
-    Model_name: list
+    Model: list
     Score: str

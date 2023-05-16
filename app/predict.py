@@ -10,6 +10,7 @@ from cm.main import PYTHON_PATH, NAME_FILE_PREDICT, status_subprocess_predict, c
 def start(request):
     uuid = u.uuid4()
     write_to_file(request.comments, uuid, 1)
+    print(NAME_FILE_PREDICT)
     sp = subprocess.Popen(
         [PYTHON_PATH, os.path.join('.\\', NAME_FILE_PREDICT), '-uuid', str(uuid), '-model', str(current_models)])
     if sp.stderr is not None:
@@ -19,9 +20,9 @@ def start(request):
     return uuid, None
 
 
-def status(request):
-    uuid = request.uuid
-    subpr = status_subprocess_predict.get(u.UUID(uuid))
+def status(req_uuid):
+    uuid = u.UUID(req_uuid)
+    subpr = status_subprocess_predict.get(uuid)
     if subpr is None:
         return subpr, 0
     return_code = subpr.poll()  # Получение информации о статусе подпроцесса. Завершен, в процессе, прерван.
@@ -34,9 +35,9 @@ def status(request):
     return subpr, return_code
 
 
-def result(request):
-    uuid = request.uuid
-    subpr = status_subprocess_predict.get(u.UUID(uuid))
+def result(req_uuid):
+    uuid = u.UUID(req_uuid)
+    subpr = status_subprocess_predict.get(uuid)
     if subpr is None:
         return None, []
     stat = get_predict_task(str(uuid), connection)

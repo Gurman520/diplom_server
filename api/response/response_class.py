@@ -1,5 +1,10 @@
 from pydantic import BaseModel
-from fastapi import File
+
+
+class PredictResultComments(BaseModel):
+    number: int
+    comment: str
+    class_comment: int
 
 
 class ResponseStatus(BaseModel):
@@ -11,7 +16,7 @@ class ResponseStart(BaseModel):
 
 
 class ResponseResult(BaseModel):
-    file: list
+    comments: list[PredictResultComments]
 
 
 class ResponseError(BaseModel):

@@ -1,7 +1,7 @@
 import logging as log
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-from api.request.request_class import Status, Start, Result
+from api.request.request_class import Start
 from api.response.response_class import ResponseStatus, ResponseStart, ResponseResult
 from app.predict import start, status, result
 
@@ -22,9 +22,9 @@ def start_analysis(req_start: Start):
 
 
 @router.get("/predict/status/{uuid}", response_model=ResponseStatus)
-def status_analysis(req_status: Status):
+def status_analysis(uuid: str):
     log.info("Get status predict")
-    subpr, return_code = status(req_status)
+    subpr, return_code = status(uuid)
     if subpr is None:
         return JSONResponse(
             content={"Message": "Не верный uuid. Задачи с таким uuid не сущетсвует."},
@@ -40,9 +40,9 @@ def status_analysis(req_status: Status):
 
 
 @router.get("/predict/result/{uuid}", response_model=ResponseResult)
-def get_result(req_result: Result):
+def get_result(uuid: str):
     log.info("Get result predict")
-    stat, ls = result(req_result)
+    stat, ls = result(uuid)
     if stat is None:
         return JSONResponse(
             content={"Message": "Не верный uuid. Задачи с таким uuid не сущетсвует."},
@@ -52,7 +52,7 @@ def get_result(req_result: Result):
             content={"Message": "Проблема с формированием файла с результами"},
             status_code=404)
     elif stat == 0 and len(ls) > 0:
-        return ResponseResult(file=ls)
+        return ResponseResult(comments=ls)
     elif stat == 1:
         return JSONResponse(content={"Message": "Процесс анализа не завершён"}, status_code=200)
     else:

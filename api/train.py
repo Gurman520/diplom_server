@@ -23,9 +23,9 @@ def start_teach(req_start: RequestTrain):
 
 
 @router.get("/teach/status/{uuid}", response_model=ResponseTrainStatus)
-def get_status(req_status: RequestTrainStatus):
+def get_status(uuid: str):
     log.info("Get status train")
-    subpr, return_code = status(req_status)
+    subpr, return_code = status(uuid)
     if subpr is None:
         return JSONResponse(
             content={"Message": "Не верный uuid. Задачи с таким uuid не сущетсвует."},
@@ -41,15 +41,15 @@ def get_status(req_status: RequestTrainStatus):
 
 
 @router.get("/teach/result/{uuid}", response_model=ResponseTrainResult)
-def get_result(req_result: RequestTrainResult):
+def get_result(uuid: str):
     log.info("Get result train")
-    stat, name_model, score = result(req_result)
+    stat, name_model, score = result(uuid)
     if stat is None:
         return JSONResponse(
             content={"Message": "Не верный uuid. Задачи с таким uuid не сущетсвует."},
             status_code=404)
     elif stat == 0 and score != 0:
-        return ResponseTrainResult(Model_name=name_model, Score=score)
+        return ResponseTrainResult(Model=name_model, Score=score)
     elif stat == 1:
         return JSONResponse(content={"Message": "Процесс обучения не завершён"}, status_code=200)
     else:

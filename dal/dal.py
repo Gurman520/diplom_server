@@ -2,7 +2,7 @@ import psycopg2
 import logging as log
 
 
-def create_connection(BD_HOST):
+def create_connection(BD_HOST, BD_PORT):
     """
     Создание соединения с БД, а так же добавление таблиц в БД, если они не найдены в БД
     :return: соединение с БД
@@ -10,7 +10,7 @@ def create_connection(BD_HOST):
     try:
         conn = psycopg2.connect(
             host=BD_HOST,
-            port=5432,
+            port=BD_PORT,
             database="server",
             user="admin",
             password="pgpwd4habr"
@@ -20,7 +20,9 @@ def create_connection(BD_HOST):
         return None
     if not exists_table(conn):
         create_table(conn)
-    log.info("Connection BD successful")
+    else:
+        log.info("Tables exist")
+    log.info(f"Connection BD successful. Host = %s, Port = %s", BD_HOST, BD_PORT)
     return conn
 
 
@@ -68,7 +70,7 @@ def create_table(conn):
         "INSERT INTO Models (nameModel, score ,toDoWork) VALUES ('startModel', 85, true);")
     conn.commit()
     cur.close()
-    log.info("Create table successful")
+    log.info("Create 3 tables successful")
 
 
 def add_new_predict_task(uuid, user_id, model_id, conn):
