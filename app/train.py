@@ -5,12 +5,16 @@ from app.parser import write_to_file
 from dal.dal import add_new_train_task, set_train_status, get_train_task, get_model_for_name
 from cm.main import PYTHON_PATH, NAME_FILE_TRAIN, status_subprocess_train, connection
 
+path = "./Files/Predict/"
+pathModel = "./Files/Models/"
+
 
 def start(request):
     uuid = u.uuid4()
     write_to_file(request.file, uuid, 0)
     sp = subprocess.Popen(
-        [PYTHON_PATH, os.path.join('.\\', NAME_FILE_TRAIN), '-uuid', str(uuid)])
+        [PYTHON_PATH, os.path.join('.\\', NAME_FILE_TRAIN), 'path_to_file', path + str(uuid) + ".csv",
+         'path_to_model', pathModel + str(current_models) + ".h5"])
     if sp.stderr is not None:
         return 0, sp.stderr
     status_subprocess_train.update({uuid: sp})

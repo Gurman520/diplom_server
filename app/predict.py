@@ -6,13 +6,17 @@ from app.parser import write_to_file, read_from_file
 from dal.dal import add_new_predict_task, set_predict_status, get_predict_task
 from cm.main import PYTHON_PATH, NAME_FILE_PREDICT, status_subprocess_predict, connection
 
+path = "./Files/Predict/"
+pathModel = "./Files/Models/"
+
 
 def start(request):
     uuid = u.uuid4()
     write_to_file(request.comments, uuid, 1)
     print(NAME_FILE_PREDICT)
     sp = subprocess.Popen(
-        [PYTHON_PATH, os.path.join('.\\', NAME_FILE_PREDICT), '-uuid', str(uuid), '-model', str(current_models)])
+        [PYTHON_PATH, os.path.join('.\\', NAME_FILE_PREDICT), 'path_to_file', path + str(uuid) + ".csv",
+         'path_to_model', pathModel + str(current_models) + ".h5"])
     if sp.stderr is not None:
         return 0, sp.stderr
     status_subprocess_predict.update({uuid: sp})
