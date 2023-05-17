@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from api.request.request_class import Start
 from api.response.response_class import ResponseStatus, ResponseStart, ResponseResult
 from app.predict import start, status, result
+from cm.info import des_pred_info, des_pred_status, des_pred_start
 
 router = APIRouter(
     prefix="/api/v1",
@@ -12,7 +13,7 @@ router = APIRouter(
 )
 
 
-@router.post("/predict", response_model=ResponseStart)
+@router.post("/predict", response_model=ResponseStart, description=des_pred_start)
 def start_analysis(req_start: Start):
     log.info("Post start predict")
     uuid, err = start(req_start)
@@ -21,7 +22,7 @@ def start_analysis(req_start: Start):
     return ResponseStart(UUID=str(uuid))
 
 
-@router.get("/predict/status/{uuid}", response_model=ResponseStatus)
+@router.get("/predict/status/{uuid}", response_model=ResponseStatus, description=des_pred_status)
 def status_analysis(uuid: str):
     log.info("Get status predict")
     subpr, return_code = status(uuid)
@@ -39,7 +40,7 @@ def status_analysis(uuid: str):
             status_code=400)
 
 
-@router.get("/predict/result/{uuid}", response_model=ResponseResult)
+@router.get("/predict/result/{uuid}", response_model=ResponseResult, description=des_pred_info)
 def get_result(uuid: str):
     log.info("Get result predict")
     stat, ls = result(uuid)
@@ -50,7 +51,7 @@ def get_result(uuid: str):
     elif stat == 0 and len(ls) == 0:
         return JSONResponse(
             content={"Message": "Проблема с формированием файла с результами"},
-            status_code=404)
+            status_code=400)
     elif stat == 0 and len(ls) > 0:
         return ResponseResult(comments=ls)
     elif stat == 1:
