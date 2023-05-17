@@ -8,8 +8,8 @@ import joblib
 
 def createParser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('path_to_file')
-    parser.add_argument('path_to_model')
+    parser.add_argument('-path_to_file')
+    parser.add_argument('-path_to_model')
     return parser
 
 
@@ -55,12 +55,12 @@ if __name__ == '__main__':
     # read file
     if '.xlsx' in file or '.xls' in file:
         df = pd.read_excel(file)
-        df.to_csv(f'./{os.path.splitext(os.path.basename(file))[0]}.csv')
-    data_for_predict = pd.read_csv(f'./{os.path.splitext(os.path.basename(file))[0]}.csv')
+        df.to_csv(f'./Files/Predict/{os.path.splitext(os.path.basename(file))[0]}.csv')
+    data_for_predict = pd.read_csv(f'./Files/Predict/{os.path.splitext(os.path.basename(file))[0]}.csv')
 
     # preproccessing data
     data = pd.DataFrame()
-    data['content'] = data_for_predict['Содержание сообщения']
+    data['content'] = data_for_predict['Comments']
     data.dropna()
     X = clear_data(data)
 
@@ -71,4 +71,4 @@ if __name__ == '__main__':
     data_with_pred = pd.DataFrame()
     data_with_pred['X'] = X
     data_with_pred['pred'] = pred
-    data_with_pred.to_csv(f'./{os.path.splitext(os.path.basename(file))[0]}_result.csv')
+    data_with_pred.to_csv(f'./Files/Predict/Finish/{os.path.splitext(os.path.basename(file))[0]}.csv')

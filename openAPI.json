@@ -515,12 +515,17 @@
         "title": "RequestTrain",
         "required": [
           "userID",
+          "modelID",
           "comments"
         ],
         "type": "object",
         "properties": {
           "userID": {
             "title": "Userid",
+            "type": "integer"
+          },
+          "modelID": {
+            "title": "Modelid",
             "type": "integer"
           },
           "comments": {
@@ -646,8 +651,7 @@
       "ResponseTrainResult": {
         "title": "ResponseTrainResult",
         "required": [
-          "Model",
-          "Score"
+          "Model"
         ],
         "type": "object",
         "properties": {
@@ -655,10 +659,6 @@
             "title": "Model",
             "type": "array",
             "items": {}
-          },
-          "Score": {
-            "title": "Score",
-            "type": "string"
           }
         }
       },

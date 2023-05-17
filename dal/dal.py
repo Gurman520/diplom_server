@@ -174,7 +174,7 @@ def set_basic_model(model_id, conn):
     return get_basic_model(conn)
 
 
-def add_new_model(name_model, score, conn):
+def add_new_model(name_model: str, score, conn):
     """
     Добавление новой модели в БД
     :param name_model: Имя модели

@@ -3,24 +3,23 @@ import uuid as u
 import subprocess
 from app.models import current_models
 from app.parser import write_to_file, read_from_file
-from dal.dal import add_new_predict_task, set_predict_status, get_predict_task
+from dal.dal import add_new_predict_task, set_predict_status, get_predict_task, get_basic_model
 from cm.main import PYTHON_PATH, NAME_FILE_PREDICT, status_subprocess_predict, connection
 
-path = "./Files/Predict/"
 pathModel = "./Files/Models/"
 
 
 def start(request):
     uuid = u.uuid4()
     write_to_file(request.comments, uuid, 1)
-    print(NAME_FILE_PREDICT)
+    model = get_basic_model(connection)
     sp = subprocess.Popen(
-        [PYTHON_PATH, os.path.join('.\\', NAME_FILE_PREDICT), 'path_to_file', path + str(uuid) + ".csv",
-         'path_to_model', pathModel + str(current_models) + ".h5"])
+        [PYTHON_PATH, os.path.join('.\\', NAME_FILE_PREDICT), '-path_to_file', str(uuid),
+         '-path_to_model', pathModel + model[1] + ".joblib"])
     if sp.stderr is not None:
         return 0, sp.stderr
     status_subprocess_predict.update({uuid: sp})
-    add_new_predict_task(str(uuid), request.userID, 1, connection)
+    add_new_predict_task(str(uuid), request.userID, current_models, connection)
     return uuid, None
 
 

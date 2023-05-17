@@ -30,7 +30,6 @@ def write_to_file(ls: list, uuid, status: int):
             list_in_dict["Comments"].append(i.comment)
         my_df = pd.DataFrame(list_in_dict)
         my_df.to_csv(name_file, index=False)
-        print("OK")
     elif status == 0:
         name_file = "./Files/Train/" + str(uuid) + '.csv'
         list_in_dict = {"Numbers": [], "Comments": [], "Predict": []}

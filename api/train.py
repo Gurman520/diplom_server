@@ -43,13 +43,13 @@ def get_status(uuid: str):
 @router.get("/teach/result/{uuid}", response_model=ResponseTrainResult)
 def get_result(uuid: str):
     log.info("Get result train")
-    stat, name_model, score = result(uuid)
+    stat, model = result(uuid)
     if stat is None:
         return JSONResponse(
             content={"Message": "Не верный uuid. Задачи с таким uuid не сущетсвует."},
             status_code=404)
-    elif stat == 0 and score != 0:
-        return ResponseTrainResult(Model=name_model, Score=score)
+    elif stat == 0:
+        return ResponseTrainResult(Model=model)
     elif stat == 1:
         return JSONResponse(content={"Message": "Процесс обучения не завершён"}, status_code=200)
     else:

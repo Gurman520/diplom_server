@@ -14,6 +14,7 @@ class RequestTrainStatus(BaseModel):
 
 class RequestTrain(BaseModel):
     userID: int
+    modelID: int
     comments: list[TrainComments]
 
 

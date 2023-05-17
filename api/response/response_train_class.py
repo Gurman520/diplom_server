@@ -11,4 +11,3 @@ class ResponseTrain(BaseModel):
 
 class ResponseTrainResult(BaseModel):
     Model: list
-    Score: str
