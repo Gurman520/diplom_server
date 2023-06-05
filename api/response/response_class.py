@@ -8,7 +8,7 @@ class PredictResultComments(BaseModel):
 
 
 class ResponseStatus(BaseModel):
-    Message: str
+    Message: str = "Processing | Finish"
 
 
 class ResponseStart(BaseModel):
@@ -17,6 +17,10 @@ class ResponseStart(BaseModel):
 
 class ResponseResult(BaseModel):
     comments: list[PredictResultComments]
+
+
+class ResponseErrorNotFound(BaseModel):
+    Message: str = "Не верный uuid. Задачи с таким uuid не сущетсвует."
 
 
 class ResponseError(BaseModel):

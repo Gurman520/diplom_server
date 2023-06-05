@@ -63,7 +63,7 @@ if __name__ == '__main__':
     if '.xlsx' in file or '.xls' in file:
         df = pd.read_excel(file)
         df.to_csv(f'./Files/Train/{os.path.splitext(os.path.basename(file))[0]}.csv')
-    data_for_predict = pd.read_csv(f'./Files/Train/{os.path.splitext(os.path.basename(file))[0]}.csv')
+    data_for_predict = pd.read_csv(f'server/Files/Train/{os.path.splitext(os.path.basename(file))[0]}.csv')
 
     # preproccessing data
     data = pd.DataFrame()

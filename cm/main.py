@@ -1,11 +1,9 @@
-from app import init_log
 import configparser
 import uvicorn
 import logging as log
 from cm.info import description, tags_metadata
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
-
 
 config = configparser.ConfigParser()
 config.read('settings.ini', encoding="utf-8")
@@ -18,9 +16,12 @@ BD_PORT = config["Settings"]["BD_PORT"]
 from dal.dal import create_connection
 connection = create_connection(BD_HOST, BD_PORT)
 
-
 status_subprocess_predict = dict()  # Словарь, которй хранит оинформацию о всех запущенных процессах.
 status_subprocess_train = dict()  # Словарь, которй хранит оинформацию о всех запущенных процессах.
+
+# Востановление задачь после неудачной останвоки сервера
+from app.start_work import restoring_work
+restoring_work(connection)
 
 app = FastAPI(
     title="Machine Learning Server",
@@ -30,7 +31,7 @@ app = FastAPI(
 )
 log.info("Start main server")
 
-from api import analysis, train, models
+from api import models, train, analysis
 
 app.include_router(analysis.router)
 app.include_router(train.router)

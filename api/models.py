@@ -3,10 +3,9 @@ from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from api.request.request_model_class import RequestModelSet
 from api.response.response_model_class import ResponseModelSet, ResponseModelDelete, ResponseModelCurrent, \
-    ResponseModelList
+    ResponseModelList, ResponseModelNotFound
 from app.models import list_model, delete_model, get_current_model, set_model
 from cm.info import des_model_put, des_model_delete
-
 
 router = APIRouter(
     prefix="/api/v1",
@@ -15,7 +14,8 @@ router = APIRouter(
 )
 
 
-@router.put("/models", response_model=ResponseModelSet, description=des_model_put)
+@router.put("/models", response_model=ResponseModelSet, responses={404: {"model": ResponseModelNotFound}},
+            description=des_model_put)
 def set_models(req_result: RequestModelSet):
     log.info("PUT current model")
     model_id = req_result.ModelID
@@ -25,7 +25,8 @@ def set_models(req_result: RequestModelSet):
     return ResponseModelSet(Model=model)
 
 
-@router.delete("/models/{model_id}", response_model=ResponseModelDelete, description=des_model_delete)
+@router.delete("/models/{model_id}", response_model=ResponseModelDelete,
+               responses={404: {"model": ResponseModelNotFound}}, description=des_model_delete)
 def delete_models(model_id: int):
     model, message = delete_model(model_id)
     if message == "Current model":

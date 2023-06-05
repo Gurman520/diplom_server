@@ -29,6 +29,7 @@ def set_model(model_id):
 
 
 def delete_model(model_id):
+    # Добавить проверку существования
     model = get_model(model_id, connection)
     if model[3]:
         return None, "Current model"

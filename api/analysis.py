@@ -2,7 +2,8 @@ import logging as log
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from api.request.request_class import Start
-from api.response.response_class import ResponseStatus, ResponseStart, ResponseResult
+from api.response.response_class import ResponseStatus, ResponseStart, ResponseResult, ResponseError, \
+    ResponseErrorNotFound
 from app.predict import start, status, result
 from cm.info import des_pred_info, des_pred_status, des_pred_start
 
@@ -13,7 +14,8 @@ router = APIRouter(
 )
 
 
-@router.post("/predict", response_model=ResponseStart, description=des_pred_start)
+@router.post("/predict", response_model=ResponseStart, responses={400: {"model": ResponseError}},
+             description=des_pred_start)
 def start_analysis(req_start: Start):
     log.info("Post start predict")
     uuid, err = start(req_start)
@@ -22,7 +24,9 @@ def start_analysis(req_start: Start):
     return ResponseStart(UUID=str(uuid))
 
 
-@router.get("/predict/status/{uuid}", response_model=ResponseStatus, description=des_pred_status)
+@router.get("/predict/status/{uuid}", response_model=ResponseStatus,
+            responses={404: {"model": ResponseErrorNotFound}, 400: {"model": ResponseError}},
+            description=des_pred_status)
 def status_analysis(uuid: str):
     log.info("Get status predict")
     subpr, return_code = status(uuid)
@@ -40,7 +44,8 @@ def status_analysis(uuid: str):
             status_code=400)
 
 
-@router.get("/predict/result/{uuid}", response_model=ResponseResult, description=des_pred_info)
+@router.get("/predict/result/{uuid}", responses={404: {"model": ResponseErrorNotFound}, 400: {"model": ResponseError}},
+            response_model=ResponseResult, description=des_pred_info)
 def get_result(uuid: str):
     log.info("Get result predict")
     stat, ls = result(uuid)

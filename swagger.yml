@@ -12,6 +12,7 @@
           "predict"
         ],
         "summary": "Start Analysis",
+        "description": "В случае ошибки запуска анализа, будет отправлено сообщение {'Message': 'Ошибка запуска аналиаз: (текст ошибки)'}",
         "operationId": "start_analysis_api_v1_predict_post",
         "requestBody": {
           "content": {
@@ -37,6 +38,16 @@
           "404": {
             "description": "Not found"
           },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseError"
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -56,6 +67,7 @@
           "predict"
         ],
         "summary": "Status Analysis",
+        "description": "При попытке обратится с неверным uuid, то будет отправлен ответ вида {'Message': 'Задачи с таким uuid не сущетствует'}\nВ случае возникновения ошибки в работе алгоритма анализа, будет отправлено сообщение {'Message': 'Ошибка в работе алгоритма анализа. Returncode: (код ошибки)'} Если задача выполняется, то будет сообщение Proccesing, если завершено, то Finish",
         "operationId": "status_analysis_api_v1_predict_status__uuid__get",
         "parameters": [
           {
@@ -80,7 +92,24 @@
             }
           },
           "404": {
-            "description": "Not found"
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrorNotFound"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseError"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -101,6 +130,7 @@
           "predict"
         ],
         "summary": "Get Result",
+        "description": "Если попытаться запросить Result раньше, чем получен Finish будет получено сообщение вида {'Message' : 'Процесс анализа не завершен.'} \n В случае отправки запроса с несуществующим uuid будет получен ответ {'Message': 'Задачи с таким uuid не сущетствует'}\n В слачае возникновения ошибки с формированием ответа будет получено 'Message': 'Проблема с формированием файла с результами'",
         "operationId": "get_result_api_v1_predict_result__uuid__get",
         "parameters": [
           {
@@ -125,7 +155,24 @@
             }
           },
           "404": {
-            "description": "Not found"
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseErrorNotFound"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseError"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -146,6 +193,7 @@
           "teach"
         ],
         "summary": "Start Teach",
+        "description": "В случае ошибки запуска обучения, будет отправлено сообщение {'Message': 'Ошибка запуска обучения: (текст ошибки)'}",
         "operationId": "start_teach_api_v1_teach_post",
         "requestBody": {
           "content": {
@@ -171,6 +219,16 @@
           "404": {
             "description": "Not found"
           },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTrainError"
+                }
+              }
+            }
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -190,6 +248,7 @@
           "teach"
         ],
         "summary": "Get Status",
+        "description": "При попытке обратится с неверным uuid, то будет отправлен ответ вида {'Message': 'Задачи с таким uuid не сущетствует'}\nВ случае возникновения ошибки в работе алгоритма обучения, будет отправлено сообщение {'Message': 'Ошибка в работе алгоритма обучения. Returncode: (код ошибки)'} Если задача выполняется, то будет сообщение Proccesing, если завершено, то Finish",
         "operationId": "get_status_api_v1_teach_status__uuid__get",
         "parameters": [
           {
@@ -214,7 +273,24 @@
             }
           },
           "404": {
-            "description": "Not found"
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTrainNotFound"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTrainError"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -235,6 +311,7 @@
           "teach"
         ],
         "summary": "Get Result",
+        "description": "При попытке обратится с неверным uuid, то будет отправлен ответ вида {'Message': 'Задачи с таким uuid не сущетствует'}\nВ случае возникновения ошибки в работе алгоритма обучения, будет отправлено сообщение {'Message': 'Ошибка в работе алгоритма обучения. Returncode: (код ошибки)'} Если задача выполняется, то будет сообщение Proccesing, если завершено, то Finish",
         "operationId": "get_result_api_v1_teach_result__uuid__get",
         "parameters": [
           {
@@ -259,7 +336,24 @@
             }
           },
           "404": {
-            "description": "Not found"
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTrainNotFound"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseTrainError"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -302,6 +396,7 @@
           "models"
         ],
         "summary": "Set Models",
+        "description": "Если модель с таким ID не была найдена, то будет отправлено сообщение 'Message': 'Такой модели не существует.' с кодом ошибки 404",
         "operationId": "set_models_api_v1_models_put",
         "requestBody": {
           "content": {
@@ -325,7 +420,14 @@
             }
           },
           "404": {
-            "description": "Not found"
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseModelNotFound"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -346,6 +448,7 @@
           "models"
         ],
         "summary": "Delete Models",
+        "description": "Если модель является основной, которую сейчас используют, то удалить ее нельзя и будет отправлен ответ {'Message': 'Модель является основной'} с кодом 400Если модель небыла найдена, то будет отправлен ответ {'Message': 'Такой модели не существует.'} с кодом 404",
         "operationId": "delete_models_api_v1_models__model_id__delete",
         "parameters": [
           {
@@ -370,7 +473,14 @@
             }
           },
           "404": {
-            "description": "Not found"
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseModelNotFound"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -537,6 +647,30 @@
           }
         }
       },
+      "ResponseError": {
+        "title": "ResponseError",
+        "required": [
+          "Message"
+        ],
+        "type": "object",
+        "properties": {
+          "Message": {
+            "title": "Message",
+            "type": "string"
+          }
+        }
+      },
+      "ResponseErrorNotFound": {
+        "title": "ResponseErrorNotFound",
+        "type": "object",
+        "properties": {
+          "Message": {
+            "title": "Message",
+            "type": "string",
+            "default": "Не верный uuid. Задачи с таким uuid не сущетсвует."
+          }
+        }
+      },
       "ResponseModelCurrent": {
         "title": "ResponseModelCurrent",
         "required": [
@@ -576,6 +710,17 @@
             "title": "Models",
             "type": "array",
             "items": {}
+          }
+        }
+      },
+      "ResponseModelNotFound": {
+        "title": "ResponseModelNotFound",
+        "type": "object",
+        "properties": {
+          "Message": {
+            "title": "Message",
+            "type": "string",
+            "default": "Такой модели не существует"
           }
         }
       },
@@ -624,14 +769,12 @@
       },
       "ResponseStatus": {
         "title": "ResponseStatus",
-        "required": [
-          "Message"
-        ],
         "type": "object",
         "properties": {
           "Message": {
             "title": "Message",
-            "type": "string"
+            "type": "string",
+            "default": "Processing | Finish"
           }
         }
       },
@@ -645,6 +788,30 @@
           "UUID": {
             "title": "Uuid",
             "type": "string"
+          }
+        }
+      },
+      "ResponseTrainError": {
+        "title": "ResponseTrainError",
+        "required": [
+          "Message"
+        ],
+        "type": "object",
+        "properties": {
+          "Message": {
+            "title": "Message",
+            "type": "string"
+          }
+        }
+      },
+      "ResponseTrainNotFound": {
+        "title": "ResponseTrainNotFound",
+        "type": "object",
+        "properties": {
+          "Message": {
+            "title": "Message",
+            "type": "string",
+            "default": "Не верный uuid. Задачи с таким uuid не сущетсвует."
           }
         }
       },
@@ -757,15 +924,15 @@
   "tags": [
     {
       "name": "predict",
-      "description": "Анализ комментариев на предмет экстремизма\nСодержит три метода:\nPredict - начало анализа\nStatus - Получение статуса анализа\nResult - Получение результата анализа"
+      "description": "Анализ комментариев на предмет экстремизма"
     },
     {
       "name": "models",
-      "description": "Методы по работе с уже обученными моделями\nСодержит 4 метода по работе с моделями: \nCurrent models - Модель, которая установлена по умолчанию\nSet models - Установить другую модель как модель по умолчанию\nDelete model - удалить модель из сервиса\nList models - Получить список всех моделей"
+      "description": "Методы по работе с уже обученными моделями"
     },
     {
       "name": "teach",
-      "description": "Методы по работе с обучением новых моделей\nсодержит 3 метода:\nStart teach - Старт обучения\nStatus - полчение статуса процесса обучения\nResult - получение результата обучения"
+      "description": "Методы по работе с обучением новых моделей"
     }
   ]
 }

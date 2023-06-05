@@ -63,7 +63,8 @@ def create_table(conn):
         trainID SERIAL PRIMARY KEY,
         uuid TEXT,
         userid INTEGER,
-        status INT);
+        status INT,
+        modelID INT);
     """)
 
     cur.execute(
@@ -71,6 +72,26 @@ def create_table(conn):
     conn.commit()
     cur.close()
     log.info("Create 3 tables successful")
+
+
+def get_work_train(conn):
+    cur = conn.cursor()
+    select_query = "SELECT uuid, modelID FROM train WHERE status = 1"
+    cur.execute(select_query)
+    pred_task = cur.fetchall()
+    conn.commit()
+    cur.close()
+    return pred_task
+
+
+def get_work_predict(conn):
+    cur = conn.cursor()
+    select_query = "SELECT uuid, modelID FROM predict WHERE status = 1"
+    cur.execute(select_query)
+    pred_task = cur.fetchall()
+    conn.commit()
+    cur.close()
+    return pred_task
 
 
 def add_new_predict_task(uuid, user_id, model_id, conn):
@@ -236,7 +257,7 @@ def delete_model_sql(model_id, conn):
     cur.close()
 
 
-def add_new_train_task(uuid, user_id, conn):
+def add_new_train_task(uuid, user_id, modelID, conn):
     """
     Добавление новой задачи обучения
     :param uuid: Уникальный идентификатор задачи
@@ -245,8 +266,8 @@ def add_new_train_task(uuid, user_id, conn):
     :return: None
     """
     cur = conn.cursor()
-    add_query = "INSERT INTO train (uuid, userid, status) VALUES(%s, %s, %s);"
-    cur.execute(add_query, (uuid, user_id, int(1)))
+    add_query = "INSERT INTO train (uuid, userid, status, modelID) VALUES(%s, %s, %s, %s);"
+    cur.execute(add_query, (uuid, user_id, int(1), modelID))
     conn.commit()
     cur.close()
 

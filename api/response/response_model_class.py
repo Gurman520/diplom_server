@@ -15,3 +15,7 @@ class ResponseModelCurrent(BaseModel):
 
 class ResponseModelList(BaseModel):
     Models: list
+
+
+class ResponseModelNotFound(BaseModel):
+    Message: str = "Такой модели не существует"

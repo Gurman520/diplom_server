@@ -11,3 +11,11 @@ class ResponseTrain(BaseModel):
 
 class ResponseTrainResult(BaseModel):
     Model: list
+
+
+class ResponseTrainError(BaseModel):
+    Message: str
+
+
+class ResponseTrainNotFound(BaseModel):
+    Message: str = "Не верный uuid. Задачи с таким uuid не сущетсвует."
