@@ -1,5 +1,6 @@
 import os
 import subprocess
+import logging as log
 from cm.main import PYTHON_PATH, NAME_FILE_PREDICT, NAME_FILE_TRAIN, status_subprocess_predict, \
     status_subprocess_train
 from dal.dal import get_work_predict, get_work_train, get_model
@@ -27,3 +28,5 @@ def restoring_work(connection):
         if sp.stderr is not None:
             continue
         status_subprocess_train.update({task[0]: sp})
+
+    log.info("Task is all start")

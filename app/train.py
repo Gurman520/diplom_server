@@ -14,7 +14,7 @@ def start(request):
     write_to_file(request.comments, uuid, 0)
     model = get_model(request.modelID, connection)
     sp = subprocess.Popen(
-        [PYTHON_PATH, os.path.join('\\', NAME_FILE_TRAIN), '-path_to_file', str(uuid),
+        [PYTHON_PATH, os.path.join('.\\', NAME_FILE_TRAIN), '-path_to_file', str(uuid),
          '-path_to_model', pathModel + model[1] + ".joblib", '-uuid', str(uuid)])
     if sp.stderr is not None:
         return 0, sp.stderr
