@@ -14,8 +14,9 @@ def start(request):
     uuid = u.uuid4()
     write_to_file(request.comments, uuid, 1)
     model = get_basic_model(connection)
+    print(os.path.join('./', NAME_FILE_PREDICT))
     sp = subprocess.Popen(
-        [PYTHON_PATH, os.path.join('.\\', NAME_FILE_PREDICT), '-path_to_file', str(uuid),
+        [PYTHON_PATH, os.path.join('./', NAME_FILE_PREDICT), '-path_to_file', str(uuid),
          '-path_to_model', pathModel + model[1] + ".joblib"])
     if sp.stderr is not None:
         log.error(f"APP - predict - error start %s", sp.stderr)
