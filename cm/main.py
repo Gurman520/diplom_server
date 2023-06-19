@@ -4,7 +4,6 @@ import logging as log
 from cm.info import description, tags_metadata
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
-import os
 
 config = configparser.ConfigParser()
 config.read('settings.ini', encoding="utf-8")

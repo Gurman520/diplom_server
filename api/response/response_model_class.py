@@ -1,20 +1,31 @@
 from pydantic import BaseModel
 
 
-class ResponseModelSet(BaseModel):
-    Model: list
+class ResponseModel(BaseModel):
+    ID: int
+    NameModel: str
+    score: float
+    Active: bool
 
 
-class ResponseModelDelete(BaseModel):
-    Model: list
+class ResponseListModels(BaseModel):
+    Models: list[ResponseModel]
 
-
-class ResponseModelCurrent(BaseModel):
-    Model: list
-
-
-class ResponseModelList(BaseModel):
-    Models: list
+#
+# class ResponseModelSet(BaseModel):
+#     Model: list
+#
+#
+# class ResponseModelDelete(BaseModel):
+#     Model: list
+#
+#
+# class ResponseModelCurrent(BaseModel):
+#     Model: list
+#
+#
+# class ResponseModelList(BaseModel):
+#     Models: list
 
 
 class ResponseModelNotFound(BaseModel):

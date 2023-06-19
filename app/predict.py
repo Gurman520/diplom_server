@@ -2,9 +2,9 @@ import os
 import uuid as u
 import subprocess
 import logging as log
-from app.models import current_models
 from app.parser import write_to_file, read_from_file
-from dal.dal import add_new_predict_task, set_predict_status, get_predict_task, get_basic_model
+import dal.predict as dal
+from dal.models import get_basic_model
 from cm.main import PYTHON_PATH, NAME_FILE_PREDICT, status_subprocess_predict, connection
 
 pathModel = "./Files/Models/"
@@ -22,7 +22,7 @@ def start(request):
         log.error(f"APP - predict - error start %s", sp.stderr)
         return 0, sp.stderr
     status_subprocess_predict.update({uuid: sp})
-    add_new_predict_task(str(uuid), request.userID, current_models, connection)
+    dal.add_new_predict_task(str(uuid), request.userID, model[0], connection)
     log.info("APP - predict - success")
     return uuid, None
 
@@ -36,13 +36,13 @@ def status(req_uuid):
     return_code = subpr.poll()  # Получение информации о статусе подпроцесса. Завершен, в процессе, прерван.
     if return_code is None:
         log.info("APP - predict status - processing")
-        set_predict_status(str(uuid), 1, connection)
+        dal.set_predict_status(str(uuid), 1, connection)
     elif return_code == 0:
         log.info("APP - predict status - finish")
-        set_predict_status(str(uuid), 0, connection)
+        dal.set_predict_status(str(uuid), 0, connection)
     else:
         log.info("APP - predict status - error")
-        set_predict_status(str(uuid), -1, connection)
+        dal.set_predict_status(str(uuid), -1, connection)
     return subpr, return_code
 
 
@@ -52,7 +52,7 @@ def result(req_uuid):
     if subpr is None:
         log.error("APP - predict result - task not found")
         return None, []
-    stat = get_predict_task(str(uuid), connection)
+    stat = dal.get_predict_task(str(uuid), connection)
     if stat == 1:
         return stat, []
     elif stat == 0:
