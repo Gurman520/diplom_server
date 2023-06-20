@@ -2,28 +2,28 @@ import psycopg2
 import logging as log
 
 
-def create_connection(BD_HOST, BD_PORT):
+def create_connection(config):
     """
     Создание соединения с БД, а так же добавление таблиц в БД, если они не найдены в БД
     :return: соединение с БД
     """
     try:
-        conn = psycopg2.connect(
-            host=BD_HOST,
-            port=BD_PORT,
-            database="server",
-            user="admin",
-            password="pgpwd4habr"
+        connection = psycopg2.connect(
+            host=config.DB_HOST,
+            port=config.DB_PORT,
+            database=config.DB_NAME,
+            user=config.DB_USER,
+            password=config.DB_PASSWORD
         )
     except:
         log.error("Error connection BD. Server run with out BD.")
         return None
-    if not exists_table(conn):
-        create_table(conn)
+    if not exists_table(connection):
+        create_table(connection)
     else:
         log.info("Tables exist")
-    log.info(f"Connection BD successful. Host = %s, Port = %s", BD_HOST, BD_PORT)
-    return conn
+    log.info(f"Connection BD successful. Host = %s, Port = %s", config.DB_HOST, config.DB_PORT)
+    return connection
 
 
 def exists_table(conn):

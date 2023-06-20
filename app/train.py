@@ -5,8 +5,10 @@ import logging as log
 from app.parser import write_to_file
 import dal.models as mod_dal
 import dal.train as dal
-from cm.main import PYTHON_PATH, NAME_FILE_TRAIN, status_subprocess_train, connection
+from cm.main import connection
+from cm.config import Config
 
+status_subprocess_train = dict()  # Словарь, который хранит информацию о всех запущенных процессах.
 pathModel = "./Files/Models/"
 
 
@@ -14,9 +16,9 @@ def start(request):
     uuid = u.uuid4()
     write_to_file(request.comments, uuid, 0)
     model = mod_dal.get_model(request.modelID, connection)
-    print(os.path.join('./', NAME_FILE_TRAIN))
+    print(os.path.join('./', Config.NAME_FILE_TRAIN))
     sp = subprocess.Popen(
-        [PYTHON_PATH, os.path.join('./', NAME_FILE_TRAIN), '-path_to_file', str(uuid),
+        [Config.PYTHON_PATH, os.path.join('./', Config.NAME_FILE_TRAIN), '-path_to_file', str(uuid),
          '-path_to_model', pathModel + model[1] + ".joblib", '-uuid', str(uuid)])
     if sp.stderr is not None:
         return 0, sp.stderr

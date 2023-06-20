@@ -5,8 +5,10 @@ import logging as log
 from app.parser import write_to_file, read_from_file
 import dal.predict as dal
 from dal.models import get_basic_model
-from cm.main import PYTHON_PATH, NAME_FILE_PREDICT, status_subprocess_predict, connection
+from cm.main import connection
+from cm.config import Config
 
+status_subprocess_predict = dict()  # Словарь, который хранит информацию о всех запущенных процессах.
 pathModel = "./Files/Models/"
 
 
@@ -14,9 +16,9 @@ def start(request):
     uuid = u.uuid4()
     write_to_file(request.comments, uuid, 1)
     model = get_basic_model(connection)
-    print(os.path.join('./', NAME_FILE_PREDICT))
+    print(os.path.join('./', Config.NAME_FILE_PREDICT))
     sp = subprocess.Popen(
-        [PYTHON_PATH, os.path.join('./', NAME_FILE_PREDICT), '-path_to_file', str(uuid),
+        [Config.PYTHON_PATH, os.path.join('./', Config.NAME_FILE_PREDICT), '-path_to_file', str(uuid),
          '-path_to_model', pathModel + model[1] + ".joblib"])
     if sp.stderr is not None:
         log.error(f"APP - predict - error start %s", sp.stderr)
