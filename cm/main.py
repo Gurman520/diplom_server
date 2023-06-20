@@ -1,27 +1,15 @@
-import configparser
 import uvicorn
 import logging as log
 from cm.info import description, tags_metadata
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
-import os
-
-config = configparser.ConfigParser()
-config.read('settings.ini', encoding="utf-8")
-PYTHON_PATH = config["Settings"]["PYTHON_PATH"]
-NAME_FILE_PREDICT = config["Settings"]["NAME_FILE_PREDICT"]
-NAME_FILE_TRAIN = config["Settings"]["NAME_FILE_TRAIN"]
-BD_HOST = config["Settings"]["BD_HOST"]
-BD_PORT = config["Settings"]["BD_PORT"]
+from cm.config import Config
 
 from dal.dal import create_connection
 
-connection = create_connection(BD_HOST, BD_PORT)
+connection = create_connection(Config)
 
-status_subprocess_predict = dict()  # Словарь, которй хранит оинформацию о всех запущенных процессах.
-status_subprocess_train = dict()  # Словарь, которй хранит оинформацию о всех запущенных процессах.
-
-# Востановление задачь после неудачной останвоки сервера
+# Востановление задачь после неудачной остановки сервера
 from app.start_work import restoring_work
 
 restoring_work(connection)
@@ -29,7 +17,7 @@ restoring_work(connection)
 app = FastAPI(
     title="Machine Learning Server",
     description=description,
-    version="0.1.1",
+    version="0.2.0",
     openapi_tags=tags_metadata
 )
 

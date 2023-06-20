@@ -1,0 +1,661 @@
+openapi: 3.0.2
+info:
+  title: Machine Learning Server
+  description: |
+
+    Данный сервер может производить анализ комментариев на предмет экстремизма
+  version: 0.1.1
+paths:
+  /api/v1/predict:
+    post:
+      tags:
+        - predict
+      summary: Start Analysis
+      description: 'В случае ошибки запуска анализа, будет отправлено сообщение {''Message'': ''Ошибка запуска аналиаз: (текст ошибки)''}'
+      operationId: start_analysis_api_v1_predict_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Start'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseStart'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/predict/status/{uuid}:
+    get:
+      tags:
+        - predict
+      summary: Status Analysis
+      description: |-
+        При попытке обратится с неверным uuid, то будет отправлен ответ вида {'Message': 'Задачи с таким uuid не сущетствует'}
+        В случае возникновения ошибки в работе алгоритма анализа, будет отправлено сообщение {'Message': 'Ошибка в работе алгоритма анализа. Returncode: (код ошибки)'} Если задача выполняется, то будет сообщение Proccesing, если завершено, то Finish
+      operationId: status_analysis_api_v1_predict_status__uuid__get
+      parameters:
+        - required: true
+          schema:
+            title: Uuid
+            type: string
+          name: uuid
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseStatus'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseErrorNotFound'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/predict/result/{uuid}:
+    get:
+      tags:
+        - predict
+      summary: Get Result
+      description: |-
+        Если попытаться запросить Result раньше, чем получен Finish будет получено сообщение вида {'Message' : 'Процесс анализа не завершен.'} 
+         В случае отправки запроса с несуществующим uuid будет получен ответ {'Message': 'Задачи с таким uuid не сущетствует'}
+         В слачае возникновения ошибки с формированием ответа будет получено 'Message': 'Проблема с формированием файла с результами'
+      operationId: get_result_api_v1_predict_result__uuid__get
+      parameters:
+        - required: true
+          schema:
+            title: Uuid
+            type: string
+          name: uuid
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseErrorNotFound'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/teach:
+    post:
+      tags:
+        - teach
+      summary: Start Teach
+      description: 'В случае ошибки запуска обучения, будет отправлено сообщение {''Message'': ''Ошибка запуска обучения: (текст ошибки)''}'
+      operationId: start_teach_api_v1_teach_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestTrain'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseTrain'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseTrainError'
+        '404':
+          description: Not found
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/teach/status/{uuid}:
+    get:
+      tags:
+        - teach
+      summary: Get Status
+      description: |-
+        При попытке обратится с неверным uuid, то будет отправлен ответ вида {'Message': 'Задачи с таким uuid не сущетствует'}
+        В случае возникновения ошибки в работе алгоритма обучения, будет отправлено сообщение {'Message': 'Ошибка в работе алгоритма обучения. Returncode: (код ошибки)'} Если задача выполняется, то будет сообщение Proccesing, если завершено, то Finish
+      operationId: get_status_api_v1_teach_status__uuid__get
+      parameters:
+        - required: true
+          schema:
+            title: Uuid
+            type: string
+          name: uuid
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseTrainStatus'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseTrainError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseTrainNotFound'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/teach/result/{uuid}:
+    get:
+      tags:
+        - teach
+      summary: Get Result
+      description: |-
+        При попытке обратится с неверным uuid, то будет отправлен ответ вида {'Message': 'Задачи с таким uuid не сущетствует'}
+        В случае возникновения ошибки в работе алгоритма обучения, будет отправлено сообщение {'Message': 'Ошибка в работе алгоритма обучения. Returncode: (код ошибки)'} Если задача выполняется, то будет сообщение Proccesing, если завершено, то Finish
+      operationId: get_result_api_v1_teach_result__uuid__get
+      parameters:
+        - required: true
+          schema:
+            title: Uuid
+            type: string
+          name: uuid
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseTrainResult'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseTrainError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseTrainNotFound'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/models:
+    get:
+      tags:
+        - models
+      summary: Current Models
+      operationId: current_models_api_v1_models_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '404':
+          description: Not found
+    put:
+      tags:
+        - models
+      summary: Set Models
+      description: 'Если модель с таким ID не была найдена, то будет отправлено сообщение ''Message'': ''Такой модели не существует.'' с кодом ошибки 404'
+      operationId: set_models_api_v1_models_put
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestModelSet'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModelNotFound'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/models/{model_id}:
+    put:
+      tags:
+        - models
+      summary: Model Rename
+      description: Переименование модели
+      operationId: model_rename_api_v1_models__model_id__put
+      parameters:
+        - required: true
+          schema:
+            title: Model Id
+            type: integer
+          name: model_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestModelRename'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModelNotFound'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+        - models
+      summary: Delete Models
+      description: 'Если модель является основной, которую сейчас используют, то удалить ее нельзя и будет отправлен ответ {''Message'': ''Модель является основной''} с кодом 400Если модель небыла найдена, то будет отправлен ответ {''Message'': ''Такой модели не существует.''} с кодом 404'
+      operationId: delete_models_api_v1_models__model_id__delete
+      parameters:
+        - required: true
+          schema:
+            title: Model Id
+            type: integer
+          name: model_id
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModel'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseModelNotFound'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/models/list:
+    get:
+      tags:
+        - models
+      summary: List Models
+      operationId: list_models_api_v1_models_list_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseListModels'
+        '404':
+          description: Not found
+  /api/v1/Health-Check:
+    get:
+      summary: Ping
+      operationId: ping_api_v1_Health_Check_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /:
+    get:
+      summary: Doc
+      operationId: doc__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+components:
+  schemas:
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+    PredictComments:
+      title: PredictComments
+      required:
+        - number
+        - comment
+      type: object
+      properties:
+        number:
+          title: Number
+          type: integer
+        comment:
+          title: Comment
+          type: string
+    PredictResultComments:
+      title: PredictResultComments
+      required:
+        - number
+        - comment
+        - class_comment
+      type: object
+      properties:
+        number:
+          title: Number
+          type: integer
+        comment:
+          title: Comment
+          type: string
+        class_comment:
+          title: Class Comment
+          type: integer
+    RequestModelRename:
+      title: RequestModelRename
+      required:
+        - NameModel
+      type: object
+      properties:
+        NameModel:
+          title: Namemodel
+          type: string
+    RequestModelSet:
+      title: RequestModelSet
+      required:
+        - ModelID
+      type: object
+      properties:
+        ModelID:
+          title: Modelid
+          type: integer
+    RequestTrain:
+      title: RequestTrain
+      required:
+        - userID
+        - modelID
+        - comments
+      type: object
+      properties:
+        userID:
+          title: Userid
+          type: integer
+        modelID:
+          title: Modelid
+          type: integer
+        comments:
+          title: Comments
+          type: array
+          items:
+            $ref: '#/components/schemas/TrainComments'
+    ResponseError:
+      title: ResponseError
+      required:
+        - Message
+      type: object
+      properties:
+        Message:
+          title: Message
+          type: string
+    ResponseErrorNotFound:
+      title: ResponseErrorNotFound
+      type: object
+      properties:
+        Message:
+          title: Message
+          type: string
+          default: Не верный uuid. Задачи с таким uuid не сущетсвует.
+    ResponseListModels:
+      title: ResponseListModels
+      required:
+        - Models
+      type: object
+      properties:
+        Models:
+          title: Models
+          type: array
+          items:
+            $ref: '#/components/schemas/ResponseModel'
+    ResponseModel:
+      title: ResponseModel
+      required:
+        - ID
+        - NameModel
+        - score
+        - Active
+      type: object
+      properties:
+        ID:
+          title: Id
+          type: integer
+        NameModel:
+          title: Namemodel
+          type: string
+        score:
+          title: Score
+          type: number
+        Active:
+          title: Active
+          type: boolean
+    ResponseModelNotFound:
+      title: ResponseModelNotFound
+      type: object
+      properties:
+        Message:
+          title: Message
+          type: string
+          default: Такой модели не существует
+    ResponseResult:
+      title: ResponseResult
+      required:
+        - comments
+      type: object
+      properties:
+        comments:
+          title: Comments
+          type: array
+          items:
+            $ref: '#/components/schemas/PredictResultComments'
+    ResponseStart:
+      title: ResponseStart
+      required:
+        - UUID
+      type: object
+      properties:
+        UUID:
+          title: Uuid
+          type: string
+    ResponseStatus:
+      title: ResponseStatus
+      type: object
+      properties:
+        Message:
+          title: Message
+          type: string
+          default: Processing | Finish
+    ResponseTrain:
+      title: ResponseTrain
+      required:
+        - UUID
+      type: object
+      properties:
+        UUID:
+          title: Uuid
+          type: string
+    ResponseTrainError:
+      title: ResponseTrainError
+      required:
+        - Message
+      type: object
+      properties:
+        Message:
+          title: Message
+          type: string
+    ResponseTrainNotFound:
+      title: ResponseTrainNotFound
+      type: object
+      properties:
+        Message:
+          title: Message
+          type: string
+          default: Не верный uuid. Задачи с таким uuid не сущетсвует.
+    ResponseTrainResult:
+      title: ResponseTrainResult
+      required:
+        - Model
+      type: object
+      properties:
+        Model:
+          title: Model
+          type: array
+          items: {}
+    ResponseTrainStatus:
+      title: ResponseTrainStatus
+      required:
+        - Message
+      type: object
+      properties:
+        Message:
+          title: Message
+          type: string
+    Start:
+      title: Start
+      required:
+        - userID
+        - comments
+      type: object
+      properties:
+        userID:
+          title: Userid
+          type: integer
+        comments:
+          title: Comments
+          type: array
+          items:
+            $ref: '#/components/schemas/PredictComments'
+    TrainComments:
+      title: TrainComments
+      required:
+        - number
+        - comment
+        - class_comment
+      type: object
+      properties:
+        number:
+          title: Number
+          type: integer
+        comment:
+          title: Comment
+          type: string
+        class_comment:
+          title: Class Comment
+          type: integer
+    ValidationError:
+      title: ValidationError
+      required:
+        - loc
+        - msg
+        - type
+      type: object
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+tags:
+  - name: predict
+    description: Анализ комментариев на предмет экстремизма
+  - name: models
+    description: Методы по работе с уже обученными моделями
+  - name: teach
+    description: Методы по работе с обучением новых моделей

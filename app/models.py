@@ -1,7 +1,15 @@
 import os
-from dal.dal import get_basic_model, get_list_models, set_basic_model, get_model, delete_model_sql
+from dal.models import get_basic_model, get_list_models, set_basic_model, get_model, delete_model_sql, \
+    rename_model as rename
 from cm.main import connection
 import logging as log
+
+
+def rename_model(name_model, model_id):
+    if exists_model(model_id):
+        model = rename(connection, name_model, model_id)
+        return model
+    return None
 
 
 def list_model():
@@ -23,10 +31,8 @@ def current_model():
 
 def set_model(model_id):
     log.info("APP Set new model for current")
-    global current_models
     if exists_model(model_id):
         model = set_basic_model(model_id, connection)
-        current_models = model[0]
         return model
     return None
 
@@ -54,6 +60,3 @@ def exists_model(model_id):
         return False
     log.info("APP - model is exists")
     return True
-
-
-current_models = current_model()
