@@ -5,6 +5,7 @@ import logging as log
 from app.parser import write_to_file
 import dal.models as mod_dal
 import dal.train as dal
+from dal.dal import get_work_train
 from cm.main import connection
 from cm.config import Config
 
@@ -68,3 +69,15 @@ def exists_model(model_name):
         log.error(f"Model with name %s not exists", model_name)
         return False
     return True
+
+
+def restart_train():
+    tasks = get_work_train(connection)
+    for task in tasks:
+        model = mod_dal.get_model(task[1], connection)
+        sp = subprocess.Popen(
+            [Config.PYTHON_PATH, os.path.join('./', Config.NAME_FILE_TRAIN), '-path_to_file', str(task[0]),
+             '-path_to_model', pathModel + model[1] + ".joblib", '-uuid', str(task[0])])
+        if sp.stderr is not None:
+            continue
+        status_subprocess_train.update({task[0]: sp})

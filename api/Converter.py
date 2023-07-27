@@ -20,4 +20,4 @@ def converter_model_list_to_api(models: list):
     for model in models:
         mod = response.ResponseModel(ID=model[0], NameModel=model[1], score=model[3], Active=model[4])
         final_models.append(mod)
-    return response.ResponseListModels(models=final_models)
+    return response.ResponseListModels(Models=final_models)
