@@ -1,3 +1,6 @@
+import sys
+import os
+
 import uvicorn
 import logging as log
 from cm.info import description, tags_metadata
@@ -12,7 +15,7 @@ connection = create_connection(Config)
 # Востановление задачь после неудачной остановки сервера
 from app.start_work import restoring_work
 
-restoring_work(connection)
+restoring_work()
 
 app = FastAPI(
     title="Machine Learning Server",

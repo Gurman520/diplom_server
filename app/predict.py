@@ -4,7 +4,8 @@ import subprocess
 import logging as log
 from app.parser import write_to_file, read_from_file
 import dal.predict as dal
-from dal.models import get_basic_model
+from dal.dal import get_work_predict
+from dal.models import get_basic_model, get_model
 from cm.main import connection
 from cm.config import Config
 
@@ -65,3 +66,16 @@ def result(req_uuid):
         return stat, []
     else:
         return stat, []
+
+
+def restart_predict():
+    tasks = get_work_predict(connection)
+    for task in tasks:
+        model = get_model(task[1], connection)
+        sp = subprocess.Popen(
+            [Config.PYTHON_PATH, os.path.join('./', Config.NAME_FILE_PREDICT), '-path_to_file', str(task[0]),
+             '-path_to_model',
+             pathModel + model[1] + ".joblib"])
+        if sp.stderr is not None:
+            continue
+        status_subprocess_predict.update({task[0]: sp})
